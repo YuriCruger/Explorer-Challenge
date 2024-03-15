@@ -8,10 +8,12 @@ import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { MdLogout } from "react-icons/md";
 import { useAuth } from "@/hooks/auth";
 import { USER_ROLES } from "@/utils/roles";
+import { useNavigate } from "react-router-dom";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { signOut, role } = useAuth();
+  const navigate = useNavigate();
 
   function toggleMenu() {
     setIsMenuOpen((prevState) => !prevState);
@@ -19,6 +21,7 @@ export function Header() {
 
   function handleLogout() {
     signOut();
+    navigate("/");
   }
 
   return (
@@ -59,7 +62,9 @@ export function Header() {
         </>
       )}
 
-      {isMenuOpen && <Menu handleLogout={handleLogout} role={role} />}
+      {isMenuOpen && (
+        <Menu handleLogout={handleLogout} role={role} toggleMenu={toggleMenu} />
+      )}
 
       <div className="relative w-full hidden lg:block">
         <div className="text-light-500 absolute translate-y-[-50%] top-[50%] left-4">

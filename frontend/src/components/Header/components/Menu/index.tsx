@@ -2,13 +2,22 @@ import { Input } from "@/components/Input";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { MenuButton } from "../MenuButton";
 import { USER_ROLES } from "@/utils/roles";
+import { useNavigate } from "react-router-dom";
 
 interface MenuProps {
   handleLogout: () => void;
   role: string | null;
+  toggleMenu: () => void;
 }
 
-export function Menu({ handleLogout, role }: MenuProps) {
+export function Menu({ handleLogout, role, toggleMenu }: MenuProps) {
+  const navigate = useNavigate();
+
+  function handleNewDishNavigation() {
+    toggleMenu();
+    navigate("/new-dish");
+  }
+
   return (
     <div className="h-screen w-full absolute top-[114px] left-0 bg-dark-400 z-50">
       <div className="px-7 py-8">
@@ -25,7 +34,7 @@ export function Menu({ handleLogout, role }: MenuProps) {
 
         <div className="mt-9">
           {role && [USER_ROLES.ADMIN].includes(role) && (
-            <MenuButton title="Novo prato" />
+            <MenuButton title="Novo prato" onClick={handleNewDishNavigation} />
           )}
           <MenuButton title="Sair" onClick={handleLogout} />
         </div>
