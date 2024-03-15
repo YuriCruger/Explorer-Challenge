@@ -7,10 +7,11 @@ import { Button } from "../Button";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { MdLogout } from "react-icons/md";
 import { useAuth } from "@/hooks/auth";
+import { USER_ROLES } from "@/utils/roles";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { signOut } = useAuth();
+  const { signOut, role } = useAuth();
 
   function toggleMenu() {
     setIsMenuOpen((prevState) => !prevState);
@@ -35,7 +36,7 @@ export function Header() {
 
       {!isMenuOpen && (
         <>
-          <div className="flex items-center gap-5 lg:mr-8">
+          <div className="flex items-center gap-3 lg:mr-8">
             <img
               src="/polygon.png"
               alt="food explorer logo"
@@ -44,6 +45,9 @@ export function Header() {
             <span className="font-bold text-2xl whitespace-nowrap">
               food explorer
             </span>
+            {role && [USER_ROLES.ADMIN].includes(role) && (
+              <span className="text-cake-200 text-xs">admin</span>
+            )}
           </div>
 
           <div className="relative lg:hidden">
@@ -55,7 +59,7 @@ export function Header() {
         </>
       )}
 
-      {isMenuOpen && <Menu />}
+      {isMenuOpen && <Menu handleLogout={handleLogout} role={role} />}
 
       <div className="relative w-full hidden lg:block">
         <div className="text-light-500 absolute translate-y-[-50%] top-[50%] left-4">

@@ -1,14 +1,14 @@
 import { Input } from "@/components/Input";
-import { useAuth } from "@/hooks/auth";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
+import { MenuButton } from "../MenuButton";
+import { USER_ROLES } from "@/utils/roles";
 
-export function Menu() {
-  const { signOut } = useAuth();
+interface MenuProps {
+  handleLogout: () => void;
+  role: string | null;
+}
 
-  function handleLogout() {
-    signOut();
-  }
-
+export function Menu({ handleLogout, role }: MenuProps) {
   return (
     <div className="h-screen w-full absolute top-[114px] left-0 bg-dark-400 z-50">
       <div className="px-7 py-8">
@@ -23,10 +23,11 @@ export function Menu() {
           />
         </div>
 
-        <div className="border-b-2 border-dark-1000 mt-9">
-          <button className="pb-2 text-2xl text-start" onClick={handleLogout}>
-            Sair
-          </button>
+        <div className="mt-9">
+          {role && [USER_ROLES.ADMIN].includes(role) && (
+            <MenuButton title="Novo prato" />
+          )}
+          <MenuButton title="Sair" onClick={handleLogout} />
         </div>
       </div>
     </div>

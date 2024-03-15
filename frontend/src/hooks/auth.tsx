@@ -24,6 +24,7 @@ interface createContextProps {
   signIn: ({ email, password }: signInProps) => void;
   signOut: () => void;
   user: User | null;
+  role: string | null;
 }
 
 interface AuthProviderProps {
@@ -43,7 +44,6 @@ function AuthProvider({ children }: AuthProviderProps) {
   async function signIn({ email, password }: signInProps) {
     try {
       const response = await api.post("/sessions", { email, password });
-      console.log(response.data);
       const { user } = response.data;
 
       localStorage.setItem("@explorer:user", JSON.stringify(user));
@@ -78,7 +78,8 @@ function AuthProvider({ children }: AuthProviderProps) {
       value={{
         signIn,
         signOut,
-        user: data ? data.user : null,
+        user: data && data.user,
+        role: data && data.user.role,
       }}
     >
       {children}
