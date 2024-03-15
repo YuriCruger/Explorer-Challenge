@@ -1,4 +1,5 @@
 import { Button } from "@/components/Button";
+import { FormGroup } from "@/components/FormGroup";
 import { Input } from "@/components/Input";
 import { Logo } from "@/components/Logo";
 import { Title } from "@/components/Title";
@@ -57,7 +58,7 @@ export default function SignUp() {
       >
         <Title title="Crie sua conta" />
 
-        <div className="flex flex-col">
+        <FormGroup>
           <Label htmlFor="name" title="Seu nome" />
           <Input
             id="name"
@@ -68,9 +69,9 @@ export default function SignUp() {
           {errors.name && (
             <p className="text-red-500 text-sm">{errors.name.message}</p>
           )}
-        </div>
+        </FormGroup>
 
-        <div className="flex flex-col">
+        <FormGroup>
           <Label htmlFor="email" title="Email" />
           <Input
             id="email"
@@ -80,9 +81,9 @@ export default function SignUp() {
           {errors.email && (
             <p className="text-red-500 text-sm">{errors.email.message}</p>
           )}
-        </div>
+        </FormGroup>
 
-        <div className="flex flex-col">
+        <FormGroup>
           <Label htmlFor="password" title="Senha" />
           <Input
             id="password"
@@ -93,7 +94,7 @@ export default function SignUp() {
           {errors.password && (
             <p className="text-red-500 text-sm">{errors.password.message}</p>
           )}
-        </div>
+        </FormGroup>
 
         <Button title="Criar uma conta" />
 
