@@ -2,7 +2,7 @@ import { Button } from "@/components/Button";
 import { FormGroup } from "@/components/FormGroup";
 import { Input } from "@/components/Input";
 import { Logo } from "@/components/Logo";
-import { Title } from "@/components/AuthPageTitle";
+import { AuthPageTitle } from "@/components/AuthPageTitle";
 import { useAuth } from "@/hooks/auth";
 import { Label } from "@components/Label";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -41,7 +41,7 @@ export default function SignIn() {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-8 w-full lg:bg-dark-700 lg:p-16 lg:rounded-2xl"
       >
-        <Title title="Faça login" />
+        <AuthPageTitle title="Faça login" />
 
         <FormGroup>
           <Label htmlFor="email" title="Email" />
