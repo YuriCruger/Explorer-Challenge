@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/services/api";
-import { BannerHome } from "@/components/Banner-Home";
+import { BannerHome } from "@/components/BannerHome";
+import { SectionTitle } from "@/components/SectionTitle";
 
 export default function Home() {
   const [dishes, setDishes] = useState([]);
@@ -19,9 +20,7 @@ export default function Home() {
   return (
     <>
       <BannerHome />
-      <div className="px-7 py-6 w-fit lg:px-32">
-        <h3 className="text-light-300 font-medium text-xl">Refeições</h3>
-      </div>
+      <SectionTitle title="Refeições" />
     </>
   );
 }
