@@ -39,8 +39,8 @@ export function Header() {
 
       {!isMenuOpen && (
         <>
-          <div className="flex items-center lg:flex-col lg:items-end">
-            <div className="flex items-center gap-3 mr-2 lg:mr-0">
+          <div className="flex items-center mx-auto lg:flex-col lg:items-end">
+            <div className="flex items-center gap-3 pr-2 lg:pr-0">
               <img
                 src="/polygon.png"
                 alt="food explorer logo"
@@ -55,12 +55,14 @@ export function Header() {
             )}
           </div>
 
-          <div className="relative lg:hidden">
-            <PiReceiptLight size={26} />
-            <span className="bg-tomato-100 rounded-full h-5 w-5 absolute -top-1.5 -right-1.5 flex items-center justify-center">
-              0
-            </span>
-          </div>
+          {role !== USER_ROLES.ADMIN && (
+            <div className="relative lg:hidden">
+              <PiReceiptLight size={26} />
+              <span className="bg-tomato-100 rounded-full h-5 w-5 absolute -top-1.5 -right-1.5 flex items-center justify-center">
+                0
+              </span>
+            </div>
+          )}
         </>
       )}
 
