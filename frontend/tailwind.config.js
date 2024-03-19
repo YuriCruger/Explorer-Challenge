@@ -4,6 +4,8 @@ export default {
   theme: {
     extend: {
       colors: {
+        "dark-100": "rgba(0,4,5,1)",
+        "dark-200": "rgba(0,7,10,1)",
         "dark-400": "rgba(0,10,15,1)",
         "dark-600": "rgba(0,17,26,1)",
         "dark-700": "rgba(0,17,25,1)",

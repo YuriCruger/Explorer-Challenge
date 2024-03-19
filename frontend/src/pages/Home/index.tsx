@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { api } from "@/services/api";
 import { BannerHome } from "@/components/BannerHome";
 import { SectionTitle } from "@/components/SectionTitle";
+import { DishCard } from "@/components/DishCard";
 
 export default function Home() {
   const [dishes, setDishes] = useState([]);
@@ -21,6 +22,10 @@ export default function Home() {
     <>
       <BannerHome />
       <SectionTitle title="Refeições" />
+
+      <div className="px-7">
+        <DishCard />
+      </div>
     </>
   );
 }
