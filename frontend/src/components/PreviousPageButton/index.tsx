@@ -14,7 +14,7 @@ export function PreviousPageButton() {
       className="text-light-100 flex items-center gap-1"
       onClick={navigateToPreviousPage}
     >
-      <IoChevronBack size={24} /> voltar
+      <IoChevronBack size={24} /> <p className="lg:text-2xl">voltar</p>
     </button>
   );
 }

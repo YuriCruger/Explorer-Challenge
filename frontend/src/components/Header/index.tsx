@@ -8,7 +8,7 @@ import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { MdLogout } from "react-icons/md";
 import { useAuth } from "@/hooks/auth";
 import { USER_ROLES } from "@/utils/roles";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -39,15 +39,17 @@ export function Header() {
 
       {!isMenuOpen && (
         <>
-          <div className="flex items-center gap-3 lg:mr-8">
-            <img
-              src="/polygon.png"
-              alt="food explorer logo"
-              className="h-[26px]"
-            />
-            <span className="font-bold text-2xl whitespace-nowrap">
-              food explorer
-            </span>
+          <div className="flex items-center lg:flex-col lg:items-end">
+            <div className="flex items-center gap-3 mr-2 lg:mr-0">
+              <img
+                src="/polygon.png"
+                alt="food explorer logo"
+                className="h-[26px]"
+              />
+              <span className="font-bold text-2xl whitespace-nowrap">
+                food explorer
+              </span>
+            </div>
             {role && [USER_ROLES.ADMIN].includes(role) && (
               <span className="text-cake-200 text-xs">admin</span>
             )}
@@ -66,7 +68,7 @@ export function Header() {
         <Menu handleLogout={handleLogout} role={role} toggleMenu={toggleMenu} />
       )}
 
-      <div className="relative w-full hidden lg:block">
+      <div className="relative flex-1 hidden lg:block">
         <div className="text-light-500 absolute translate-y-[-50%] top-[50%] left-4">
           <HiMiniMagnifyingGlass size={26} />
         </div>
@@ -77,12 +79,21 @@ export function Header() {
       </div>
 
       <div className="w-[216px] hidden lg:block">
-        <Button
-          title="Pedidos (0)"
-          className="flex items-center justify-center gap-1"
-        >
-          <PiReceiptLight size={26} />
-        </Button>
+        {role === USER_ROLES.ADMIN ? (
+          <Link to="/new-dish">
+            <Button
+              title="Novo prato"
+              className="flex items-center justify-center gap-1"
+            />
+          </Link>
+        ) : (
+          <Button
+            title="Pedidos (0)"
+            className="flex items-center justify-center gap-1"
+          >
+            <PiReceiptLight size={26} />
+          </Button>
+        )}
       </div>
 
       <button className="hidden lg:block" onClick={handleLogout}>
