@@ -5,11 +5,14 @@ const express = require("express");
 const AppError = require("./utils/AppError");
 const routes = require("./routes");
 const cookieParser = require("cookie-parser");
+const path = require("path");
+const uploadConfig = require("./configs/upload");
 
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
+app.use("/uploads", express.static(path.resolve(uploadConfig.UPLOADS_FOLDER)));
 
 app.use(routes);
 
