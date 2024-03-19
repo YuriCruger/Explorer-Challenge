@@ -2,7 +2,7 @@ import { Button } from "@/components/Button";
 import { FormGroup } from "@/components/FormGroup";
 import { Input } from "@/components/Input";
 import { Logo } from "@/components/Logo";
-import { Title } from "@/components/Title";
+import { AuthPageTitle } from "@/components/AuthPageTitle";
 import { api } from "@/services/api";
 import { Label } from "@components/Label";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -56,7 +56,7 @@ export default function SignUp() {
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col w-full gap-8 lg:bg-dark-700 lg:p-16 lg:rounded-2xl"
       >
-        <Title title="Crie sua conta" />
+        <AuthPageTitle title="Crie sua conta" />
 
         <FormGroup>
           <Label htmlFor="name" title="Seu nome" />

@@ -2,7 +2,7 @@ import { Button } from "@/components/Button";
 import { FormGroup } from "@/components/FormGroup";
 import { Input } from "@/components/Input";
 import { Logo } from "@/components/Logo";
-import { Title } from "@/components/Title";
+import { Title } from "@/components/AuthPageTitle";
 import { useAuth } from "@/hooks/auth";
 import { Label } from "@components/Label";
 import { zodResolver } from "@hookform/resolvers/zod";
