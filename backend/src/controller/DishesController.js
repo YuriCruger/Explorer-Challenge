@@ -50,7 +50,16 @@ class DishesController {
   async index(request, response) {
     const dishes = await knex("dishes").select("*");
 
-    return response.json(dishes);
+    const dishesWithIngredients = await Promise.all(
+      dishes.map(async (dish) => {
+        const ingredients = await knex("ingredients")
+          .where("dish_id", dish.id)
+          .select("*");
+        return { ...dish, ingredients };
+      })
+    );
+
+    return response.json(dishesWithIngredients);
   }
 }
 
