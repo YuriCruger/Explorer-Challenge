@@ -5,7 +5,7 @@ import { DISH_CATEGORIES } from "@/utils/dish-categories";
 
 interface SelectProps {
   handleSelectCategory: (name: string) => void;
-  categoryName: string;
+  categoryName: string | undefined;
   register: any;
 }
 
@@ -55,8 +55,7 @@ export function Select({
           type="text"
           readOnly
           className="bg-transparent focus:outline-none placeholder:text-light-500 pointer-events-none"
-          placeholder="Selecione a categoria"
-          value={categoryName}
+          defaultValue={categoryName}
         />
 
         {!isChecked ? <FaChevronDown /> : <FaChevronUp />}
