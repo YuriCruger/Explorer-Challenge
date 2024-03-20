@@ -121,7 +121,10 @@ export default function NewDish() {
         <div className="flex flex-col gap-6 lg:flex-row">
           <FormGroup className="lg:w-[259px]">
             <Label title="Imagem do prato" htmlFor="dish-image" />
-            <FileUploadButton register={register("image")} />
+            <FileUploadButton
+              title="Selecione uma imagem"
+              register={register("image")}
+            />
             {errors.image && (
               <p className="text-red-500 text-sm">
                 {String(errors.image.message)}
@@ -175,7 +178,7 @@ export default function NewDish() {
             )}
           </FormGroup>
 
-          <FormGroup className="w-[351px]">
+          <FormGroup className="lg:w-[351px]">
             <Label title="Preço" htmlFor="price" />
             <Input
               id="price"
