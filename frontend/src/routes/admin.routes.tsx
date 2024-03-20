@@ -1,3 +1,5 @@
+import DishPage from "@/pages/DishPage";
+import EditDish from "@/pages/EditDish";
 import Home from "@/pages/Home";
 import NewDish from "@/pages/New-Dish";
 import { Route, Routes } from "react-router-dom";
@@ -7,6 +9,8 @@ export function AdminRoutes() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/new-dish" element={<NewDish />} />
+      <Route path="/edit-dish/:id" element={<EditDish />} />
+      <Route path="/dish/:id" element={<DishPage />} />
     </Routes>
   );
 }
