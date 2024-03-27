@@ -24,9 +24,7 @@ class DishesController {
       image: filename,
     });
 
-    const ingredientsArray = ingredients.split(",");
-
-    const ingredientsInsert = ingredientsArray.map((ingredient) => {
+    const ingredientsInsert = ingredients.map((ingredient) => {
       return {
         dish_id,
         name: ingredient,
@@ -60,6 +58,43 @@ class DishesController {
     );
 
     return response.json(dishesWithIngredients);
+  }
+
+  async update(request, response) {
+    const { id } = request.params;
+    const { name, category, price, description, ingredients } = request.body;
+
+    const dish = await knex("dishes").where({ id }).first();
+
+    if (!dish) {
+      throw new AppError("Prato não encontrado");
+    }
+
+    const updatedDish = {
+      name,
+      category,
+      price,
+      description,
+      updated_at: knex.fn.now(),
+    };
+
+    await knex("dishes").where({ id }).update(updatedDish);
+
+    console.log(ingredients);
+
+    const ingredientsArray = ingredients.split(",");
+
+    const ingredientsInsert = ingredientsArray.map((ingredient) => {
+      return {
+        dish_id: id,
+        name: ingredient,
+      };
+    });
+
+    await knex("ingredients").where("dish_id", id).delete();
+    await knex("ingredients").insert(ingredientsInsert);
+
+    return response.status(200).json();
   }
 }
 

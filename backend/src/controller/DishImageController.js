@@ -4,15 +4,15 @@ const DiskStorage = require("../providers/DiskStorage");
 
 class DishImageController {
   async update(request, response) {
-    const dish_id = request.dish.id;
+    const { id: dish_id } = request.params;
     const imageFilename = request.file.filename;
 
     const diskStorage = new DiskStorage();
 
     const dish = await knex("dishes").where({ id: dish_id }).first();
 
-    if (!dish_id) {
-      throw new AppError("", 401);
+    if (!dish) {
+      throw new AppError("Prato não encontrado", 401);
     }
 
     if (dish.image) {

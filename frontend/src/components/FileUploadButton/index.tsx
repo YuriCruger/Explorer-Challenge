@@ -1,11 +1,14 @@
 import { FiUpload } from "react-icons/fi";
 
 interface FileUploadButtonProps {
-  register: any;
   title: string;
+  onFileChange: any;
 }
 
-export function FileUploadButton({ register, title }: FileUploadButtonProps) {
+export const FileUploadButton = ({
+  title,
+  onFileChange,
+}: FileUploadButtonProps) => {
   return (
     <label
       htmlFor="dish-image"
@@ -14,7 +17,7 @@ export function FileUploadButton({ register, title }: FileUploadButtonProps) {
       <FiUpload size={20} />
       {title}
       <input
-        {...register}
+        onChange={onFileChange}
         className="hidden"
         id="dish-image"
         type="file"
@@ -22,4 +25,4 @@ export function FileUploadButton({ register, title }: FileUploadButtonProps) {
       />
     </label>
   );
-}
+};

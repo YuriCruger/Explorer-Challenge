@@ -46,10 +46,10 @@ export default function SignIn() {
         <FormGroup>
           <Label htmlFor="email" title="Email" />
           <Input
+            {...register("email")}
             id="email"
             autoFocus
             placeholder="Exemplo: exemplo@exemplo.com.br"
-            register={register("email")}
           />
           {errors.email && (
             <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -59,10 +59,10 @@ export default function SignIn() {
         <FormGroup>
           <Label htmlFor="password" title="Senha" />
           <Input
+            {...register("password")}
             id="password"
             type="password"
             placeholder="No mínimo 6 caracteres"
-            register={register("password")}
           />
           {errors.password && (
             <p className="text-red-500 text-sm">{errors.password.message}</p>

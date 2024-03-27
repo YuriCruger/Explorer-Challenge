@@ -1,7 +1,7 @@
 import DishPage from "@/pages/DishPage";
 import EditDish from "@/pages/EditDish";
 import Home from "@/pages/Home";
-import NewDish from "@/pages/New-Dish";
+import NewDish from "@/pages/NewDish";
 import { Route, Routes } from "react-router-dom";
 
 export function AdminRoutes() {

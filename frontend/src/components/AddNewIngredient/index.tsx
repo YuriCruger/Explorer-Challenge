@@ -17,7 +17,7 @@ export function AddNewIngredient({ handleNewIngredient }: any) {
         onChange={(e) =>
           setNewIngredientName(e.target.value.toLocaleLowerCase())
         }
-        className="bg-transparent w-[80px] focus:outline-none placeholder:text-light-500"
+        className="bg-transparent focus:outline-none placeholder:text-light-500"
         placeholder="Adicionar"
       />
       <button
