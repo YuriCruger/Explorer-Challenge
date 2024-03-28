@@ -2,7 +2,6 @@ import { BannerHome } from "@/pages/Home/components/BannerHome";
 import { DishCarouselSection } from "@/pages/Home/components/DishCarouselSection";
 import { useDish } from "@/providers/dishes";
 import { DISH_CATEGORIES } from "@/utils/dish-categories";
-
 import "swiper/css";
 import "swiper/css/navigation";
 

@@ -1,3 +1,4 @@
+import { NotFound } from "@/components/NotFound";
 import DishPage from "@/pages/DishPage";
 import Home from "@/pages/Home";
 import { Route, Routes } from "react-router-dom";
@@ -7,6 +8,8 @@ export function ClientRoutes() {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/dish/:id" element={<DishPage />} />
+
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
