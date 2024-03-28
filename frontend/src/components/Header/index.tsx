@@ -6,10 +6,10 @@ import { Input } from "../Input";
 import { Button } from "../Button";
 import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { MdLogout } from "react-icons/md";
-import { useAuth } from "@/hooks/auth";
+import { useAuth } from "@/providers/auth";
 import { USER_ROLES } from "@/utils/roles";
 import { Link, useNavigate } from "react-router-dom";
-import { useSearch } from "@/hooks/search";
+import { useSearch } from "@/providers/search";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

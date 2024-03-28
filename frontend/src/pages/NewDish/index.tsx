@@ -1,7 +1,7 @@
 import { DishForm } from "@/components/DishForm";
 import { PageTitle } from "@/components/PageTitle";
 import { PreviousPageButton } from "@/components/PreviousPageButton";
-import { useDish } from "@/hooks/dishes";
+import { useDish } from "@/providers/dishes";
 import { AxiosError, api } from "@/services/api";
 
 export default function NewDish() {

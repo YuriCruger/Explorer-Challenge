@@ -4,7 +4,7 @@ import { MenuButton } from "../MenuButton";
 import { USER_ROLES } from "@/utils/roles";
 import { useNavigate } from "react-router-dom";
 import { ChangeEvent } from "react";
-import { useSearch } from "@/hooks/search";
+import { useSearch } from "@/providers/search";
 
 interface MenuProps {
   handleLogout: () => void;

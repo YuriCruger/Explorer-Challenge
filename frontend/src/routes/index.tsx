@@ -1,6 +1,6 @@
 import { BrowserRouter } from "react-router-dom";
 import { AuthRoutes } from "./auth.routes";
-import { useAuth } from "@/hooks/auth";
+import { useAuth } from "@/providers/auth";
 import { ClientRoutes } from "./client.routes";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";

@@ -2,9 +2,9 @@ import { PageTitle } from "@/components/PageTitle";
 import { PreviousPageButton } from "@/components/PreviousPageButton";
 import { DishForm } from "@/components/DishForm";
 import { useParams } from "react-router-dom";
-import { useDish } from "@/hooks/dishes";
+import { useDish } from "@/providers/dishes";
 import { AxiosError, api } from "@/services/api";
-import { EditFormSkeleton } from "@/components/EditPageSkeleton";
+import { EditFormSkeleton } from "@/pages/EditDish/components/EditPageSkeleton";
 
 export default function EditDish() {
   const { id } = useParams();

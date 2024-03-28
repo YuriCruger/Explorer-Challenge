@@ -2,8 +2,8 @@ import { Button } from "@/components/Button";
 import { IngredientsList } from "@/components/IngredientsList";
 import { PreviousPageButton } from "@/components/PreviousPageButton";
 import { QuantityCounter } from "@/components/QuantityCounter";
-import { useAuth } from "@/hooks/auth";
-import { useDish } from "@/hooks/dishes";
+import { useAuth } from "@/providers/auth";
+import { useDish } from "@/providers/dishes";
 import { USER_ROLES } from "@/utils/roles";
 
 import { Link, useParams } from "react-router-dom";

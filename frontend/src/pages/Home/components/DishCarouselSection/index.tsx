@@ -1,10 +1,10 @@
-import { DishCardSkeleton } from "@/components/DishCardSkeleton";
+import { DishCardSkeleton } from "@/pages/Home/components/DishCardSkeleton";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { SectionTitle } from "@/components/SectionTitle";
-import { DishCard } from "@/components/DishCard";
+import { DishCard } from "@/pages/Home/components/DishCard";
 import { Dish } from "@/types/dish";
-import { useSearch } from "@/hooks/search";
+import { useSearch } from "@/providers/search";
 
 interface DishCarouselSectionProps {
   dishList: Dish[] | null;

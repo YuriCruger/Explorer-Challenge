@@ -3,7 +3,7 @@ import { FormGroup } from "@/components/FormGroup";
 import { Input } from "@/components/Input";
 import { Logo } from "@/components/Logo";
 import { AuthPageTitle } from "@/components/AuthPageTitle";
-import { useAuth } from "@/hooks/auth";
+import { useAuth } from "@/providers/auth";
 import { Label } from "@components/Label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";

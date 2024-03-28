@@ -1,12 +1,12 @@
 import { formatPrice } from "@/utils/formatPrice";
 import { PiPencilSimpleBold } from "react-icons/pi";
 import { CiHeart } from "react-icons/ci";
-import { useAuth } from "@/hooks/auth";
+import { useAuth } from "@/providers/auth";
 import { USER_ROLES } from "@/utils/roles";
-import { Button } from "../Button";
+import { Button } from "../../../../components/Button";
 import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
-import { QuantityCounter } from "../QuantityCounter";
+import { QuantityCounter } from "../../../../components/QuantityCounter";
 import { Ingredient } from "@/types/dish";
 
 interface DishCardProps {
