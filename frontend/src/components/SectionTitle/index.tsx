@@ -4,8 +4,8 @@ interface SectionTitleProps {
 
 export function SectionTitle({ title }: SectionTitleProps) {
   return (
-    <div className="px-7 py-6 w-fit lg:px-32">
-      <h3 className="text-light-300 font-medium text-xl lg:text-4xl">
+    <div className="px-7 py-6 w-fit xl:px-32">
+      <h3 className="text-light-300 font-medium text-2xl lg:text-4xl">
         {title}
       </h3>
     </div>

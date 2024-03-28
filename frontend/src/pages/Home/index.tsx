@@ -1,8 +1,10 @@
 import { BannerHome } from "@/components/BannerHome";
-import { SectionTitle } from "@/components/SectionTitle";
-import { DishCard } from "@/components/DishCard";
+import { DishCarouselSection } from "@/components/DishCarouselSection";
 import { useDish } from "@/hooks/dishes";
-import { DishCardSkeleton } from "@/components/DishCardSkeleton";
+import { DISH_CATEGORIES } from "@/utils/dish-categories";
+
+import "swiper/css";
+import "swiper/css/navigation";
 
 export default function Home() {
   const { dishList, fetchErrorOccurred } = useDish();
@@ -16,24 +18,21 @@ export default function Home() {
   return (
     <>
       <BannerHome />
-      <SectionTitle title="Refeições" />
-
-      <div className="flex gap-5 px-7 mb-12 xl:px-32">
-        {dishList
-          ? dishList.map((dish) => (
-              <DishCard
-                key={dish.id}
-                name={dish.name}
-                price={dish.price}
-                img={dish.image}
-                id={dish.id}
-                ingredients={dish.ingredients}
-              />
-            ))
-          : Array(5)
-              .fill(0)
-              .map((_, index) => <DishCardSkeleton key={index} />)}
-      </div>
+      <DishCarouselSection
+        sectionTitle={DISH_CATEGORIES.MEAL}
+        dishList={dishList}
+        category="MEAL"
+      />
+      <DishCarouselSection
+        sectionTitle={DISH_CATEGORIES.DESSERT}
+        dishList={dishList}
+        category="DESSERT"
+      />
+      <DishCarouselSection
+        sectionTitle={DISH_CATEGORIES.DRINK}
+        dishList={dishList}
+        category="DRINK"
+      />
     </>
   );
 }

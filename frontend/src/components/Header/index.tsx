@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { HiMenu, HiOutlineX } from "react-icons/hi";
 import { PiReceiptLight } from "react-icons/pi";
 import { Menu } from "./components/Menu";
@@ -9,10 +9,12 @@ import { MdLogout } from "react-icons/md";
 import { useAuth } from "@/hooks/auth";
 import { USER_ROLES } from "@/utils/roles";
 import { Link, useNavigate } from "react-router-dom";
+import { useSearch } from "@/hooks/search";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { signOut, role } = useAuth();
+  const { updateSearchState } = useSearch();
   const navigate = useNavigate();
 
   function toggleMenu() {
@@ -22,6 +24,12 @@ export function Header() {
   function handleLogout() {
     signOut();
     navigate("/");
+  }
+
+  function handleSearch(event: ChangeEvent<HTMLInputElement>) {
+    const query = event.target.value;
+
+    updateSearchState(query);
   }
 
   return (
@@ -67,7 +75,12 @@ export function Header() {
       )}
 
       {isMenuOpen && (
-        <Menu handleLogout={handleLogout} role={role} toggleMenu={toggleMenu} />
+        <Menu
+          handleLogout={handleLogout}
+          role={role}
+          toggleMenu={toggleMenu}
+          handleSearch={handleSearch}
+        />
       )}
 
       <div className="relative flex-1 hidden lg:block">
@@ -77,6 +90,7 @@ export function Header() {
         <Input
           placeholder="Busque por pratos ou ingredientes"
           className="w-full pl-14"
+          onChange={handleSearch}
         />
       </div>
 

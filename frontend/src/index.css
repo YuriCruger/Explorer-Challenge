@@ -14,3 +14,13 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
+
+.swiper-button-next,
+.swiper-button-prev {
+  color: #ccc !important;
+  transform: scale(0.7);
+}
+
+.swiper {
+  margin-left: 0 !important;
+}

@@ -4,13 +4,16 @@ import "./index.css";
 import { Routes } from "./routes";
 import { AuthProvider } from "./hooks/auth";
 import { DishProvider } from "./hooks/dishes";
+import { SearchProvider } from "./hooks/search";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <AuthProvider>
-      <DishProvider>
-        <Routes />
-      </DishProvider>
+      <SearchProvider>
+        <DishProvider>
+          <Routes />
+        </DishProvider>
+      </SearchProvider>
     </AuthProvider>
   </React.StrictMode>
 );
