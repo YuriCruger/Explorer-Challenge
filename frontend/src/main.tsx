@@ -6,6 +6,7 @@ import { AuthProvider } from "./providers/auth";
 import { DishProvider } from "./providers/dishes";
 import { SearchProvider } from "./providers/search";
 import { OrdersProvider } from "./providers/orders";
+import { Toaster } from "sonner";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -14,6 +15,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <DishProvider>
           <SearchProvider>
             <Routes />
+            <Toaster richColors />
           </SearchProvider>
         </DishProvider>
       </OrdersProvider>

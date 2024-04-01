@@ -3,6 +3,7 @@ import { DishCarouselSection } from "@/pages/Home/components/DishCarouselSection
 import { useDish } from "@/providers/dishes";
 import { DISH_CATEGORIES } from "@/utils/dish-categories";
 import { useEffect } from "react";
+import { toast } from "sonner";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -14,7 +15,7 @@ export default function Home() {
   }, []);
 
   if (fetchErrorOccurred) {
-    alert(
+    toast(
       "Ocorreu um erro ao buscar os pratos. Por favor, tente novamente mais tarde."
     );
   }

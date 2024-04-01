@@ -9,6 +9,7 @@ import { USER_ROLES } from "@/utils/roles";
 import { useState } from "react";
 
 import { Link, useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 export default function DishPage() {
   const { dishList, fetchErrorOccurred } = useDish();
@@ -41,7 +42,7 @@ export default function DishPage() {
   };
 
   if (fetchErrorOccurred) {
-    alert(
+    toast(
       "Ocorreu um erro ao buscar o prato. Por favor, tente novamente mais tarde."
     );
   }

@@ -8,6 +8,7 @@ import { formatPrice } from "@/utils/formatPrice";
 import { Dish } from "@/types/dish";
 import { api } from "@/services/api";
 import { useAuth } from "@/providers/auth";
+import { toast } from "sonner";
 
 export default function Orders() {
   const { orders, deleteOrder, clearOrders } = useOrders();
@@ -38,10 +39,10 @@ export default function Orders() {
         user_id: user?.id,
       })
       .then(() => {
-        alert("Pedido realizado com sucesso.");
+        toast("Pedido realizado com sucesso.");
         clearOrders();
       })
-      .catch(() => alert("Erro ao fazer o pedido."));
+      .catch(() => toast("Erro ao fazer o pedido."));
   };
 
   return (

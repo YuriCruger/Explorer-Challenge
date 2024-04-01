@@ -3,6 +3,7 @@ import { PageTitle } from "@/components/PageTitle";
 import { PreviousPageButton } from "@/components/PreviousPageButton";
 import { useDish } from "@/providers/dishes";
 import { AxiosError, api } from "@/services/api";
+import { toast } from "sonner";
 
 export default function NewDish() {
   const { fetchAllDishes } = useDish();
@@ -35,13 +36,13 @@ export default function NewDish() {
         }
       )
       .then(() => {
-        alert("Formulário enviado com sucesso");
+        toast("Prato adicionado com sucesso.");
         fetchAllDishes();
       })
       .catch((error) => {
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          alert(axiosError.response.data.message);
+          toast(axiosError.response.data.message);
         }
       });
   };
@@ -52,7 +53,6 @@ export default function NewDish() {
       <PageTitle title="Novo prato" />
 
       <DishForm onSubmit={handleAddDish} />
-      {/* <NewDishForm /> */}
     </div>
   );
 }

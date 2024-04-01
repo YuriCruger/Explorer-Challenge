@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Ingredient } from "@/types/dish";
+import { toast } from "sonner";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 
@@ -130,7 +131,7 @@ export function DishForm({
 
   function addIngredientToList(newIngredient: string) {
     if (ingredientList.includes(newIngredient)) {
-      return alert("Você já possui esse ingrediente");
+      return toast("Você já possui esse ingrediente");
     }
     setIngredientList([newIngredient, ...ingredientList]);
   }

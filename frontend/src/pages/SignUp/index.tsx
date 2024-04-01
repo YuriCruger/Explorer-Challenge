@@ -9,6 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
+import { toast } from "sonner";
 
 const registerSchema = z.object({
   name: z.string().min(1, "Você precisa inserir seu nome"),
@@ -36,14 +37,14 @@ export default function SignUp() {
         password: values.password,
       })
       .then(() => {
-        alert("Cadastro realizado com sucesso!");
+        toast("Cadastro realizado com sucesso!");
         navigate("/");
       })
       .catch((error) => {
         if (error.response) {
-          alert(error.response.data.message);
+          toast(error.response.data.message);
         } else {
-          alert("Não foi possível cadastrar.");
+          toast("Não foi possível cadastrar.");
         }
       });
   }
@@ -64,7 +65,7 @@ export default function SignUp() {
             id="name"
             autoFocus
             placeholder="Exemplo: Maria da Silva"
-            register={register("name")}
+            {...register("name")}
           />
           {errors.name && (
             <p className="text-red-500 text-sm">{errors.name.message}</p>
@@ -76,7 +77,7 @@ export default function SignUp() {
           <Input
             id="email"
             placeholder="Exemplo: exemplo@exemplo.com.br"
-            register={register("email")}
+            {...register("email")}
           />
           {errors.email && (
             <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -89,7 +90,7 @@ export default function SignUp() {
             id="password"
             type="password"
             placeholder="No mínimo 6 caracteres"
-            register={register("password")}
+            {...register("password")}
           />
           {errors.password && (
             <p className="text-red-500 text-sm">{errors.password.message}</p>

@@ -6,6 +6,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { toast } from "sonner";
 
 interface User {
   created_at: string;
@@ -52,7 +53,7 @@ function AuthProvider({ children }: AuthProviderProps) {
     } catch (error) {
       const axiosError = error as AxiosError;
       if (axiosError.response) {
-        alert(axiosError.response.data.message);
+        toast(axiosError.response.data.message);
       }
     }
   }

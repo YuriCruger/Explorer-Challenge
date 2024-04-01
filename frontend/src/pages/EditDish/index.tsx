@@ -7,6 +7,7 @@ import { AxiosError, api } from "@/services/api";
 import { EditFormSkeleton } from "@/pages/EditDish/components/EditPageSkeleton";
 import { useState } from "react";
 import { DeleteConfirmationModal } from "./components/DeleteConfirmationModal";
+import { toast } from "sonner";
 
 export default function EditDish() {
   const [isDeleteConfirmationModalOpen, setDeleteConfirmationModalOpen] =
@@ -33,7 +34,7 @@ export default function EditDish() {
           .catch((error) => {
             const axiosError = error as AxiosError;
             if (axiosError.response) {
-              alert(axiosError.response.data.message);
+              toast(axiosError.response.data.message);
             }
             reject();
           });
@@ -53,17 +54,19 @@ export default function EditDish() {
       .catch((error) => {
         const axiosError = error as AxiosError;
         if (axiosError.response) {
-          alert(axiosError.response.data.message);
+          toast(axiosError.response.data.message);
         }
       });
 
     Promise.all([updateImage, updateDish])
       .then(() => {
-        alert("Prato atualizado com sucesso");
+        toast("Prato atualizado com sucesso");
         fetchAllDishes();
       })
       .catch(() => {
-        console.log("Alguma das requisições falhou");
+        toast(
+          "Erro ao atualizar o prato, por favor tente novamente mais tarde."
+        );
       });
   };
 
@@ -80,13 +83,11 @@ export default function EditDish() {
     api
       .delete(`/dishes/${id}`)
       .then(() => {
-        alert("Produto deletado com sucesso.");
+        toast("Prato deletado com sucesso.");
         navigate("/");
       })
       .catch(() => {
-        alert(
-          "Erro ao deletar o produto, por favor tente novamente mais tarde."
-        );
+        toast("Erro ao deletar o prato, por favor tente novamente mais tarde.");
       });
   };
 
