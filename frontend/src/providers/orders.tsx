@@ -12,12 +12,14 @@ interface OrdersProviderProps {
 
 interface Orders {
   id: number;
+  name: string;
   quantity: number;
 }
 
 interface OrdersContextProps {
-  addOrder: (newOrder: number, quantity: number) => void;
+  addOrder: (orderId: number, orderName: string, orderQuantity: number) => void;
   deleteOrder: (orderId: number) => void;
+  clearOrders: () => void;
   orders: Orders[];
 }
 
@@ -29,22 +31,33 @@ const OrdersProvider = ({ children }: OrdersProviderProps) => {
     return savedOrders ? JSON.parse(savedOrders) : [];
   });
 
-  const addOrder = (newOrder: number, quantity: number) => {
-    if (orders.some((order) => order.id === newOrder)) {
+  const addOrder = (
+    orderId: number,
+    orderName: string,
+    orderQuantity: number
+  ) => {
+    if (orders.some((order) => order.id === orderId)) {
       setOrders(
         orders.map((order) =>
-          order.id === newOrder
-            ? { ...order, quantity: order.quantity + quantity }
+          order.id === orderId
+            ? { ...order, quantity: order.quantity + orderQuantity }
             : order
         )
       );
       return;
     }
-    setOrders([...orders, { id: newOrder, quantity }]);
+    setOrders([
+      ...orders,
+      { id: orderId, name: orderName, quantity: orderQuantity },
+    ]);
   };
 
   const deleteOrder = (orderId: number) => {
     setOrders((prevState) => prevState.filter((order) => order.id !== orderId));
+  };
+
+  const clearOrders = () => {
+    setOrders([]);
   };
 
   useEffect(() => {
@@ -56,6 +69,7 @@ const OrdersProvider = ({ children }: OrdersProviderProps) => {
       value={{
         addOrder,
         deleteOrder,
+        clearOrders,
         orders,
       }}
     >

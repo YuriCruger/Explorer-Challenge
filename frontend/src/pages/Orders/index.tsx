@@ -6,10 +6,13 @@ import { useOrders } from "@/providers/orders";
 import { useDish } from "@/providers/dishes";
 import { formatPrice } from "@/utils/formatPrice";
 import { Dish } from "@/types/dish";
+import { api } from "@/services/api";
+import { useAuth } from "@/providers/auth";
 
 export default function Orders() {
-  const { orders, deleteOrder } = useOrders();
+  const { orders, deleteOrder, clearOrders } = useOrders();
   const { dishList } = useDish();
+  const { user } = useAuth();
 
   const dishesInCart = dishList?.filter((dish) =>
     orders.some((order) => order.id === dish.id)
@@ -24,6 +27,22 @@ export default function Orders() {
     (total, dish) => total + dish.price * getQuantity(dish),
     0
   );
+
+  console.log(orders);
+
+  const handleSubmitOrder = () => {
+    api
+      .post("/orders", {
+        total_price: dishesTotalPrice,
+        products: orders,
+        user_id: user?.id,
+      })
+      .then(() => {
+        alert("Pedido realizado com sucesso.");
+        clearOrders();
+      })
+      .catch(() => alert("Erro ao fazer o pedido."));
+  };
 
   return (
     <div className="px-7 pt-3 pb-12 xl:px-32">
@@ -49,7 +68,11 @@ export default function Orders() {
             <p className="text-3xl font-bold text-light-100">
               Total: {formatPrice(Number(dishesTotalPrice))}
             </p>
-            <Button title="Finalizar compra" className="lg:w-[172px]" />
+            <Button
+              title="Finalizar compra"
+              className="lg:w-[172px]"
+              onClick={handleSubmitOrder}
+            />
           </div>
         </>
       ) : (

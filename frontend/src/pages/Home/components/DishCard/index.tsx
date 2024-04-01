@@ -25,8 +25,8 @@ export function DishCard({ name, price, img, id, ingredients }: DishCardProps) {
   const formattedPrice = formatPrice(price);
   const [quantity, setQuantity] = useState(1);
 
-  const handleAddToCart = (dishId: number) => {
-    addOrder(dishId, quantity);
+  const handleAddToCart = () => {
+    addOrder(id, name, quantity);
     setQuantity(1);
   };
 
@@ -87,7 +87,7 @@ export function DishCard({ name, price, img, id, ingredients }: DishCardProps) {
             handleDecrement={handleDecrement}
           />
 
-          <Button title="Incluir" onClick={() => handleAddToCart(id)} />
+          <Button title="Incluir" onClick={handleAddToCart} />
         </div>
       )}
     </div>

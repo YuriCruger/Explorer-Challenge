@@ -19,9 +19,11 @@ export default function DishPage() {
 
   const dish = dishList?.find((dish) => dish.id === Number(id));
 
-  const handleAddToCart = (dishId: number) => {
-    addOrder(dishId, quantity);
-    setQuantity(1);
+  const handleAddToCart = () => {
+    if (dish) {
+      addOrder(dish.id, dish.name, quantity);
+      setQuantity(1);
+    }
   };
 
   const handleIncrement = () => {
@@ -89,7 +91,7 @@ export default function DishPage() {
                 />
 
                 <Button
-                  onClick={() => handleAddToCart(dish.id)}
+                  onClick={handleAddToCart}
                   title="Pedir"
                   className="flex-1 max-w-[370px] lg:max-w-[162px]"
                 />
