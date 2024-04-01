@@ -2,11 +2,16 @@ import { BannerHome } from "@/pages/Home/components/BannerHome";
 import { DishCarouselSection } from "@/pages/Home/components/DishCarouselSection";
 import { useDish } from "@/providers/dishes";
 import { DISH_CATEGORIES } from "@/utils/dish-categories";
+import { useEffect } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 
 export default function Home() {
-  const { dishList, fetchErrorOccurred } = useDish();
+  const { dishList, fetchErrorOccurred, fetchAllDishes } = useDish();
+
+  useEffect(() => {
+    fetchAllDishes();
+  }, []);
 
   if (fetchErrorOccurred) {
     alert(

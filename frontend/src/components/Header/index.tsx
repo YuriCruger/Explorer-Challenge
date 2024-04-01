@@ -48,16 +48,18 @@ export function Header() {
       {!isMenuOpen && (
         <>
           <div className="flex items-center mx-auto lg:flex-col lg:items-end">
-            <div className="flex items-center gap-3 pr-2 lg:pr-0">
-              <img
-                src="/polygon.png"
-                alt="food explorer logo"
-                className="h-[26px]"
-              />
-              <span className="font-bold text-2xl whitespace-nowrap">
-                food explorer
-              </span>
-            </div>
+            <Link to="/">
+              <div className="flex items-center gap-3 pr-2 lg:pr-0">
+                <img
+                  src="/polygon.png"
+                  alt="food explorer logo"
+                  className="h-[26px]"
+                />
+                <span className="font-bold text-2xl whitespace-nowrap">
+                  food explorer
+                </span>
+              </div>
+            </Link>
             {role && [USER_ROLES.ADMIN].includes(role) && (
               <span className="text-cake-200 text-xs">admin</span>
             )}

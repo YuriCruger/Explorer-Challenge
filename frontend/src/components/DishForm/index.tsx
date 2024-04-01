@@ -97,12 +97,14 @@ interface DishFormProps {
   isEdit?: boolean;
   initialValues?: any;
   onSubmit: (values: dishSchemaProps) => void;
+  handleDeleteDish?: () => void;
 }
 
 export function DishForm({
   isEdit = false,
   initialValues,
   onSubmit,
+  handleDeleteDish,
 }: DishFormProps) {
   const [categoryName, setCategoryName] = useState("");
   const [ingredientList, setIngredientList] = useState<string[]>([]);
@@ -256,7 +258,21 @@ export function DishForm({
         )}
       </FormGroup>
 
-      <Button title="Salvar alterações" className="lg:w-[172px] lg:ml-auto" />
+      <div className="flex gap-5 justify-end">
+        {isEdit && (
+          <Button
+            type="button"
+            title="Excluir prato"
+            className="lg:w-[172px] bg-light-600 hover:bg-light-500"
+            onClick={handleDeleteDish}
+          />
+        )}
+        <Button
+          type="submit"
+          title="Salvar alterações"
+          className="lg:w-[172px]"
+        />
+      </div>
     </form>
   );
 }

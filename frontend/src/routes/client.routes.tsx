@@ -1,4 +1,4 @@
-import { NotFound } from "@/components/NotFound";
+import { NotFound } from "@/pages/NotFound";
 import DishPage from "@/pages/DishPage";
 import Home from "@/pages/Home";
 import { Route, Routes } from "react-router-dom";
