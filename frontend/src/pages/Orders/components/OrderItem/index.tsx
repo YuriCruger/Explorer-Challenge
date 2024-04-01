@@ -1,30 +1,45 @@
-export function OrderItem() {
+import { Dish } from "@/types/dish";
+import { formatPrice } from "@/utils/formatPrice";
+
+interface OrderItemProps {
+  dish: Dish;
+  deleteOrder: (orderId: number) => void;
+  quantity: number;
+}
+
+export function OrderItem({ dish, deleteOrder, quantity }: OrderItemProps) {
   return (
     <div className="py-5 flex flex-col gap-2 lg:flex-row">
       <div>
-        <div className="flex gap-2">
+        <div className="flex gap-5">
           <img
-            src="/macarons-mobile.png"
+            src={`http://localhost:3333/uploads/${dish.image}`}
             alt=""
-            className="h-[88px] w-[88px] rounded-full lg:w-[176px] lg:h-[176px]"
+            className="h-[100px] w-[100px] rounded-full lg:w-[176px] lg:h-[176px]"
           />
 
           <div className="flex flex-col gap-1">
-            <h3 className="text-2xl font-bold">Macarons</h3>
+            <h3 className="text-2xl font-bold">{dish.name}</h3>
             <p className="text-light-300">
-              Macarons é muito bom vale muito a pena comer
+              {dish.ingredients.map((ingredient) => ingredient.name).join(", ")}
+              .
             </p>
-            <div className="flex items-center gap-2">
-              <p className="text-sm text-zinc-400 mt-auto">Quantidade: 2</p>
+            <div className="flex items-center gap-2 mt-auto">
+              <p className="text-sm text-zinc-400 mt-auto">
+                Quantidade: {quantity}
+              </p>
             </div>
           </div>
         </div>
       </div>
 
       <div className="flex flex-col gap-2 items-start lg:ml-auto">
-        <p className="text-2xl font-bold">R$10</p>
+        <p className="text-2xl font-bold">{formatPrice(dish.price)}</p>
 
-        <button className="mt-auto text-tomato-200 hover:underline lg:ml-auto">
+        <button
+          onClick={() => deleteOrder(dish.id)}
+          className="mt-auto text-tomato-200 hover:underline lg:ml-auto"
+        >
           Remover
         </button>
       </div>

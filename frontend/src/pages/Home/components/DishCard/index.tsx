@@ -8,6 +8,8 @@ import { IoIosArrowForward } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { QuantityCounter } from "../../../../components/QuantityCounter";
 import { Ingredient } from "@/types/dish";
+import { useState } from "react";
+import { useOrders } from "@/providers/orders";
 
 interface DishCardProps {
   name: string;
@@ -19,7 +21,28 @@ interface DishCardProps {
 
 export function DishCard({ name, price, img, id, ingredients }: DishCardProps) {
   const { role } = useAuth();
+  const { addOrder } = useOrders();
   const formattedPrice = formatPrice(price);
+  const [quantity, setQuantity] = useState(1);
+
+  const handleAddToCart = (dishId: number) => {
+    addOrder(dishId, quantity);
+    setQuantity(1);
+  };
+
+  const handleIncrement = () => {
+    if (quantity >= 10) {
+      return;
+    }
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
+
+  const handleDecrement = () => {
+    if (quantity <= 1) {
+      return;
+    }
+    setQuantity((prevQuantity) => prevQuantity - 1);
+  };
 
   return (
     <div className="relative bg-dark-200 w-[210px] h-[292px] flex flex-col items-center justify-center gap-2 rounded-lg ring-2 ring-dark-100 p-2 lg:w-[304px] lg:h-[462px] lg:gap-4">
@@ -58,9 +81,13 @@ export function DishCard({ name, price, img, id, ingredients }: DishCardProps) {
 
       {role === USER_ROLES.CLIENT && (
         <div className="space-y-2 w-full flex flex-col items-center lg:flex-row lg:px-10 lg:gap-3">
-          <QuantityCounter />
+          <QuantityCounter
+            quantity={quantity}
+            handleIncrement={handleIncrement}
+            handleDecrement={handleDecrement}
+          />
 
-          <Button title="Incluir" />
+          <Button title="Incluir" onClick={() => handleAddToCart(id)} />
         </div>
       )}
     </div>

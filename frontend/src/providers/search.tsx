@@ -29,7 +29,7 @@ function useSearch() {
   const context = useContext(SearchContext);
 
   if (!context) {
-    throw new Error("useDish must be used within an DishProvider");
+    throw new Error("useSearch must be used within an SearchProvider");
   }
 
   return context;

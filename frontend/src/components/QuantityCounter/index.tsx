@@ -1,32 +1,33 @@
-import { useState } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 
-export function QuantityCounter() {
-  const [dishQuantity, setDishQuantity] = useState(1);
+interface QuantityCounterProps {
+  quantity: number;
+  handleIncrement: any;
+  handleDecrement: any;
+}
 
-  function incrementQuantity() {
-    if (dishQuantity >= 10) {
-      return;
-    }
-    setDishQuantity((prevQuantity) => prevQuantity + 1);
-  }
-
-  function decrementQuantity() {
-    if (dishQuantity <= 1) {
-      return;
-    }
-    setDishQuantity((prevQuantity) => prevQuantity - 1);
-  }
-
+export function QuantityCounter({
+  quantity,
+  handleIncrement,
+  handleDecrement,
+}: QuantityCounterProps) {
   return (
     <div className="text-light-300 flex items-center gap-5">
-      <button onClick={decrementQuantity}>
+      <button
+        onClick={() => {
+          handleDecrement();
+        }}
+      >
         <FaMinus size={20} />
       </button>
 
-      <span className="text-xl">{dishQuantity}</span>
+      <span className="text-xl">{quantity}</span>
 
-      <button onClick={incrementQuantity}>
+      <button
+        onClick={() => {
+          handleIncrement();
+        }}
+      >
         <FaPlus size={20} />
       </button>
     </div>

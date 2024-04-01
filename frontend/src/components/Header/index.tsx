@@ -10,11 +10,13 @@ import { useAuth } from "@/providers/auth";
 import { USER_ROLES } from "@/utils/roles";
 import { Link, useNavigate } from "react-router-dom";
 import { useSearch } from "@/providers/search";
+import { useOrders } from "@/providers/orders";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { signOut, role } = useAuth();
   const { updateSearchState } = useSearch();
+  const { orders } = useOrders();
   const navigate = useNavigate();
 
   function toggleMenu() {
@@ -66,12 +68,14 @@ export function Header() {
           </div>
 
           {role !== USER_ROLES.ADMIN && (
-            <div className="relative lg:hidden">
-              <PiReceiptLight size={26} />
-              <span className="bg-tomato-100 rounded-full h-5 w-5 absolute -top-1.5 -right-1.5 flex items-center justify-center">
-                0
-              </span>
-            </div>
+            <Link to="/orders">
+              <div className="relative lg:hidden">
+                <PiReceiptLight size={26} />
+                <span className="bg-tomato-100 rounded-full h-5 w-5 absolute -top-1.5 -right-1.5 flex items-center justify-center">
+                  {orders.length}
+                </span>
+              </div>
+            </Link>
           )}
         </>
       )}
@@ -107,7 +111,7 @@ export function Header() {
         ) : (
           <Link to="/orders">
             <Button
-              title="Pedidos (0)"
+              title={`Pedidos (${orders.length})`}
               className="flex items-center justify-center gap-1"
             >
               <PiReceiptLight size={26} />

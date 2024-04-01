@@ -5,15 +5,18 @@ import { Routes } from "./routes";
 import { AuthProvider } from "./providers/auth";
 import { DishProvider } from "./providers/dishes";
 import { SearchProvider } from "./providers/search";
+import { OrdersProvider } from "./providers/orders";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <AuthProvider>
-      <SearchProvider>
+      <OrdersProvider>
         <DishProvider>
-          <Routes />
+          <SearchProvider>
+            <Routes />
+          </SearchProvider>
         </DishProvider>
-      </SearchProvider>
+      </OrdersProvider>
     </AuthProvider>
   </React.StrictMode>
 );
