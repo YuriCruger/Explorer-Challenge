@@ -10,6 +10,7 @@ import { QuantityCounter } from "../../../../components/QuantityCounter";
 import { Ingredient } from "@/types/dish";
 import { useState } from "react";
 import { useOrders } from "@/providers/orders";
+import { toast } from "sonner";
 
 interface DishCardProps {
   name: string;
@@ -28,6 +29,7 @@ export function DishCard({ name, price, img, id, ingredients }: DishCardProps) {
   const handleAddToCart = () => {
     addOrder(id, name, quantity);
     setQuantity(1);
+    toast("Produto adicionado ao carrinho.");
   };
 
   const handleIncrement = () => {
