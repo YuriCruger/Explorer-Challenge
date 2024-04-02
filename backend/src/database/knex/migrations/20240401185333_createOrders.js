@@ -11,6 +11,7 @@ exports.up = async (knex) => {
       .default("not_delivered");
     table.decimal("total_price");
     table.timestamp("created_at").default(knex.fn.now());
+    table.timestamp("updated_at").default(knex.fn.now());
   });
 
   await knex.schema.createTable("order_products", (table) => {

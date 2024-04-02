@@ -100,19 +100,22 @@ export function Header() {
         />
       </div>
 
-      <div className="w-[216px] hidden lg:block">
+      <div className="hidden lg:block">
         {role === USER_ROLES.ADMIN ? (
-          <Link to="/new-dish">
-            <Button
-              title="Novo prato"
-              className="flex items-center justify-center gap-1"
-            />
-          </Link>
+          <div className="flex items-center gap-5">
+            <Link to="/new-dish">
+              <Button title="Novo prato" className="w-[180px] " />
+            </Link>
+
+            <Link to="/order-management">
+              <Button title="Gerenciar pedidos" className="w-[180px] " />
+            </Link>
+          </div>
         ) : (
           <Link to="/orders">
             <Button
               title={`Pedidos (${orders.length})`}
-              className="flex items-center justify-center gap-1"
+              className="flex items-center justify-center gap-1 w-[226px]"
             >
               <PiReceiptLight size={26} />
             </Button>

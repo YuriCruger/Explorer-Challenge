@@ -108,13 +108,10 @@ export default function EditDish() {
         />
       )}
       {isDeleteConfirmationModalOpen && (
-        <>
-          <div className="absolute left-0 top-0 h-full w-full bg-black opacity-50 z-0" />
-          <DeleteConfirmationModal
-            handleCancelDelete={handleCancelDelete}
-            handleConfirmDelete={handleConfirmDelete}
-          />
-        </>
+        <DeleteConfirmationModal
+          handleCancelDelete={handleCancelDelete}
+          handleConfirmDelete={handleConfirmDelete}
+        />
       )}
     </div>
   );
