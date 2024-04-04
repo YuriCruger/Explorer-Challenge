@@ -96,7 +96,7 @@ export function DishCard({
           </button>
         </Link>
       ) : (
-        <div className="absolute right-2 top-2">
+        <div className="absolute right-2 top-2 z-50 overflow-visible">
           <FavoriteButton handleFavoriteToggle={handleFavoriteToggle}>
             {favorite ? (
               <IoMdHeart size={28} color="red" />
