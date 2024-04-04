@@ -39,33 +39,34 @@ export function DishCarouselSection({
       <SectionTitle title={sectionTitle} />
 
       <div className="flex px-7 mb-12 xl:px-32 ">
-        <Swiper
-          className="ml-0"
-          slidesPerView={"auto"}
-          spaceBetween={30}
-          modules={[Navigation]}
-          navigation
-        >
-          {filteredDishes
-            ? filteredDishes.map((dish) => {
-                if (dish.category === category) {
-                  return (
-                    <SwiperSlide key={dish.id} style={{ width: "auto" }}>
-                      <DishCard
-                        name={dish.name}
-                        price={dish.price}
-                        img={dish.image}
-                        id={dish.id}
-                        ingredients={dish.ingredients}
-                      />
-                    </SwiperSlide>
-                  );
-                }
-              })
-            : Array(5)
-                .fill(0)
-                .map((_, index) => <DishCardSkeleton key={index} />)}
-        </Swiper>
+        {filteredDishes ? (
+          <Swiper
+            className="ml-0"
+            slidesPerView={"auto"}
+            spaceBetween={30}
+            modules={[Navigation]}
+            navigation
+          >
+            {filteredDishes.map((dish) => {
+              if (dish.category === category) {
+                return (
+                  <SwiperSlide key={dish.id} style={{ width: "auto" }}>
+                    <DishCard
+                      name={dish.name}
+                      price={dish.price}
+                      img={dish.image}
+                      id={dish.id}
+                      ingredients={dish.ingredients}
+                      isFavorite={dish.isFavorite}
+                    />
+                  </SwiperSlide>
+                );
+              }
+            })}
+          </Swiper>
+        ) : (
+          <DishCardSkeleton />
+        )}
       </div>
     </>
   );

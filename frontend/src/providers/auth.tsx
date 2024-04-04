@@ -26,6 +26,7 @@ interface createContextProps {
   signOut: () => void;
   user: User | null;
   role: string | null;
+  loading: boolean;
 }
 
 interface AuthProviderProps {
@@ -41,10 +42,15 @@ const AuthContext = createContext<createContextProps | null>(null);
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [data, setData] = useState<dataProps | null>(null);
+  const [loading, setLoading] = useState(true);
 
   async function signIn({ email, password }: signInProps) {
     try {
-      const response = await api.post("/sessions", { email, password });
+      const response = await api.post(
+        "/sessions",
+        { email, password },
+        { withCredentials: true }
+      );
       const { user } = response.data;
 
       localStorage.setItem("@explorer:user", JSON.stringify(user));
@@ -55,6 +61,8 @@ function AuthProvider({ children }: AuthProviderProps) {
       if (axiosError.response) {
         toast(axiosError.response.data.message);
       }
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -72,6 +80,8 @@ function AuthProvider({ children }: AuthProviderProps) {
         user: JSON.parse(user),
       });
     }
+
+    setLoading(false);
   }, []);
 
   return (
@@ -81,6 +91,7 @@ function AuthProvider({ children }: AuthProviderProps) {
         signOut,
         user: data && data.user,
         role: data && data.user.role,
+        loading,
       }}
     >
       {children}

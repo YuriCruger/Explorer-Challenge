@@ -3,9 +3,10 @@ export interface Dish {
   name: string;
   description: string;
   category: string;
-  price: number;
+  price: string;
   image: string;
   ingredients: Ingredient[];
+  isFavorite: { [userId: string]: boolean };
   created_at: string;
   updated_at: string;
 }

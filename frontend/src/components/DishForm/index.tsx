@@ -20,7 +20,7 @@ const addDishSchema = z.object({
   image: z
     .any()
     .refine((value) => value !== null && value !== undefined, {
-      message: "O valor não pode ser nulo",
+      message: "Por favor, insira uma imagem",
     })
     .refine(
       (value) => !value || value instanceof File || value instanceof Blob,
@@ -41,15 +41,7 @@ const addDishSchema = z.object({
     .refine((data) => data.length > 0, {
       message: "Insira pelo menos um ingrediente",
     }),
-  price: z.string().refine(
-    (val) => {
-      const parsed = parseFloat(val);
-      return !isNaN(parsed) && parsed > 0;
-    },
-    {
-      message: "Insira um preço válido e positivo.",
-    }
-  ),
+  price: z.coerce.number({ invalid_type_error: "Insira um número válido" }),
   description: z.string().min(1, "Insira uma descrição."),
 });
 
@@ -80,15 +72,7 @@ const editDishSchema = z.object({
     .refine((data) => data.length > 0, {
       message: "Insira pelo menos um ingrediente",
     }),
-  price: z.string().refine(
-    (val) => {
-      const parsed = parseFloat(val);
-      return !isNaN(parsed) && parsed > 0;
-    },
-    {
-      message: "Insira um preço válido e positivo.",
-    }
-  ),
+  price: z.coerce.number({ invalid_type_error: "Insira um número válido" }),
   description: z.string().min(1, "Insira uma descrição."),
 });
 
@@ -111,6 +95,9 @@ export function DishForm({
   const [ingredientList, setIngredientList] = useState<string[]>([]);
   const dishSchema = isEdit ? editDishSchema : addDishSchema;
   const { image, ...initialValuesWithoutImage } = initialValues ?? {};
+  const [currentInitialValues, setCurrentInitialValues] = useState<any>(
+    initialValuesWithoutImage
+  );
 
   const {
     handleSubmit,
@@ -120,7 +107,7 @@ export function DishForm({
     formState: { errors },
   } = useForm<dishSchemaProps>({
     resolver: zodResolver(dishSchema),
-    defaultValues: initialValuesWithoutImage,
+    defaultValues: currentInitialValues,
     mode: "onBlur",
   });
 
@@ -150,8 +137,10 @@ export function DishForm({
   };
 
   const handleFormSubmit = (values: dishSchemaProps) => {
+    if (!isEdit) {
+      reset();
+    }
     onSubmit(values);
-    reset();
     setIngredientList([]);
     setCategoryName("");
   };
@@ -161,6 +150,7 @@ export function DishForm({
   }, [ingredientList]);
 
   useEffect(() => {
+    setCurrentInitialValues(initialValues);
     if (initialValues && initialValues.ingredients) {
       setIngredientList(
         initialValues.ingredients.map(

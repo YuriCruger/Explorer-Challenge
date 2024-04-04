@@ -11,20 +11,35 @@ import { Ingredient } from "@/types/dish";
 import { useState } from "react";
 import { useOrders } from "@/providers/orders";
 import { toast } from "sonner";
+import { IoMdHeart } from "react-icons/io";
+import { api } from "@/services/api";
+import { FavoriteButton } from "@/components/FavoriteButton";
+import { cn } from "@/utils/cn";
 
 interface DishCardProps {
   name: string;
-  price: number;
+  price: string;
   img: string;
   id: number;
   ingredients: Ingredient[];
+  isFavorite: { [userId: string]: boolean };
+  className?: string;
 }
 
-export function DishCard({ name, price, img, id, ingredients }: DishCardProps) {
-  const { role } = useAuth();
+export function DishCard({
+  name,
+  price,
+  img,
+  id,
+  ingredients,
+  isFavorite,
+  className,
+}: DishCardProps) {
+  const { role, user } = useAuth();
   const { addOrder } = useOrders();
-  const formattedPrice = formatPrice(price);
+  const formattedPrice = formatPrice(Number(price));
   const [quantity, setQuantity] = useState(1);
+  const [favorite, setFavorite] = useState(user ? isFavorite[user.id] : false);
 
   const handleAddToCart = () => {
     addOrder(id, name, quantity);
@@ -46,8 +61,34 @@ export function DishCard({ name, price, img, id, ingredients }: DishCardProps) {
     setQuantity((prevQuantity) => prevQuantity - 1);
   };
 
+  const handleFavoriteToggle = () => {
+    if (!user) {
+      return;
+    }
+    if (!favorite) {
+      api
+        .post("/favorite-products", {
+          product_id: id,
+          user_id: user.id,
+        })
+        .then(() => {
+          setFavorite(true);
+        });
+      return;
+    }
+
+    api.delete(`/favorite-products/${user.id}/${id}`).then(() => {
+      setFavorite(false);
+    });
+  };
+
   return (
-    <div className="relative bg-dark-200 w-[210px] h-[292px] flex flex-col items-center justify-center gap-2 rounded-lg ring-2 ring-dark-100 p-2 lg:w-[304px] lg:h-[462px] lg:gap-4">
+    <div
+      className={cn(
+        "relative bg-dark-200 w-[210px] h-[292px] flex flex-col items-center justify-center gap-2 rounded-lg ring-2 ring-dark-100 p-2 lg:w-[304px] lg:h-[462px] lg:gap-4",
+        className
+      )}
+    >
       {role === USER_ROLES.ADMIN ? (
         <Link to={`edit-dish/${id}`}>
           <button className="text-light-300 absolute right-2 top-2">
@@ -55,11 +96,16 @@ export function DishCard({ name, price, img, id, ingredients }: DishCardProps) {
           </button>
         </Link>
       ) : (
-        <button className="text-light-300 absolute right-2 top-2">
-          <CiHeart size={28} />
-        </button>
+        <div className="absolute right-2 top-2">
+          <FavoriteButton handleFavoriteToggle={handleFavoriteToggle}>
+            {favorite ? (
+              <IoMdHeart size={28} color="red" />
+            ) : (
+              <CiHeart size={28} />
+            )}
+          </FavoriteButton>
+        </div>
       )}
-
       <img
         src={`http://localhost:3333/uploads/${img}`}
         alt={`Foto do prato, ${name}`}

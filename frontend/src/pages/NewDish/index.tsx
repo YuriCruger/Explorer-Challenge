@@ -47,7 +47,7 @@ export default function NewDish() {
       });
   };
   return (
-    <div className="px-7 pt-3 pb-12 space-y-6 xl:px-32">
+    <div className="px-7 pt-3 pb-12 xl:px-32">
       <PreviousPageButton />
 
       <PageTitle title="Novo prato" />

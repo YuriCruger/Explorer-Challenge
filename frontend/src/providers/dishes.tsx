@@ -26,6 +26,7 @@ function DishProvider({ children }: DishProviderProps) {
 
   async function fetchAllDishes() {
     try {
+      // api.defaults.headers.authorization = `Bearer ${token}`;
       const response = await api.get("/dishes");
 
       setDishList(response.data);

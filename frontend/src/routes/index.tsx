@@ -8,7 +8,7 @@ import { USER_ROLES } from "@/utils/roles";
 import { AdminRoutes } from "./admin.routes";
 
 export function Routes() {
-  const { user, role } = useAuth();
+  const { user, role, loading } = useAuth();
 
   function AccessRoutes() {
     switch (role) {
@@ -21,6 +21,10 @@ export function Routes() {
       default:
         return <ClientRoutes />;
     }
+  }
+
+  if (loading) {
+    return <div />;
   }
 
   return (

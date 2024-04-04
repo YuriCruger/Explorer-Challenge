@@ -112,14 +112,23 @@ export function Header() {
             </Link>
           </div>
         ) : (
-          <Link to="/orders">
-            <Button
-              title={`Pedidos (${orders.length})`}
-              className="flex items-center justify-center gap-1 w-[226px]"
-            >
-              <PiReceiptLight size={26} />
-            </Button>
-          </Link>
+          <div className="flex items-center gap-5">
+            <Link to="/favorites">
+              <Button
+                title="Favoritos"
+                className="flex items-center justify-center gap-1 w-[180px]"
+              />
+            </Link>
+
+            <Link to="/orders">
+              <Button
+                title={`Pedidos (${orders.length})`}
+                className="flex items-center justify-center gap-1 w-[180px]"
+              >
+                <PiReceiptLight size={26} />
+              </Button>
+            </Link>
+          </div>
         )}
       </div>
 
