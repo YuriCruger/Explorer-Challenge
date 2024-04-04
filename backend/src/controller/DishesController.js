@@ -48,16 +48,36 @@ class DishesController {
   async index(request, response) {
     const dishes = await knex("dishes").select("*");
 
-    const dishesWithIngredients = await Promise.all(
+    const favoriteProductsByUser = await knex("favorite_products")
+      .select("user_id", "product_id")
+      .groupBy("user_id", "product_id");
+
+    const favoriteProductsMap = {};
+
+    favoriteProductsByUser.forEach(({ user_id, product_id }) => {
+      if (!favoriteProductsMap[user_id]) {
+        favoriteProductsMap[user_id] = [];
+      }
+      favoriteProductsMap[user_id].push(product_id);
+    });
+
+    const dishesWithIngredientsAndFavorites = await Promise.all(
       dishes.map(async (dish) => {
         const ingredients = await knex("ingredients")
           .where("dish_id", dish.id)
           .select("*");
-        return { ...dish, ingredients };
+
+        const isFavorite = {};
+
+        for (const userId in favoriteProductsMap) {
+          isFavorite[userId] = favoriteProductsMap[userId].includes(dish.id);
+        }
+
+        return { ...dish, ingredients, isFavorite };
       })
     );
 
-    return response.json(dishesWithIngredients);
+    return response.json(dishesWithIngredientsAndFavorites);
   }
 
   async update(request, response) {

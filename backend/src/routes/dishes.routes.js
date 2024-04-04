@@ -4,7 +4,7 @@ const uploadConfig = require("../configs/upload");
 
 const DishesController = require("../controller/DishesController");
 const DishImageController = require("../controller/DishImageController");
-// const ensureAuthenticated = require("../middlewares/ensureAuthenticated");
+const ensureAuthenticated = require("../middlewares/ensureAuthenticated");
 
 const dishesController = new DishesController();
 const dishImageController = new DishImageController();
