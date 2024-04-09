@@ -2,45 +2,47 @@ import { PageTitle } from "@/components/PageTitle";
 import { PreviousPageButton } from "@/components/PreviousPageButton";
 import { OrderItem } from "./components/OrderItem";
 import { Button } from "@/components/Button";
-import { useOrders } from "@/providers/orders";
-import { useDish } from "@/providers/dishes";
+import { useOrders } from "@/hooks/cartOrders";
+import { useDish } from "@/hooks/dishes";
 import { formatPrice } from "@/utils/formatPrice";
 import { Dish } from "@/types/dish";
 import { api } from "@/services/api";
-import { useAuth } from "@/providers/auth";
+import { useAuth } from "@/hooks/auth";
 import { toast } from "sonner";
 
 export default function Orders() {
-  const { orders, deleteOrder, clearOrders } = useOrders();
+  const { cartOrders, deleteOrderFromCart, clearOrdersFromCart } = useOrders();
   const { dishList } = useDish();
   const { user } = useAuth();
 
   const dishesInCart = dishList?.filter((dish) =>
-    orders.some((order) => order.id === dish.id)
+    cartOrders.some((order) => order.id === dish.id)
   );
 
   const getQuantity = (dish: Dish) => {
-    const order = orders.find((order) => order.id === dish.id);
+    const order = cartOrders.find((order) => order.id === dish.id);
     return order ? order.quantity : 1;
   };
 
   const dishesTotalPrice = dishesInCart?.reduce(
-    (total, dish) => total + dish.price * getQuantity(dish),
+    (total, dish) => total + Number(dish.price) * getQuantity(dish),
     0
   );
 
-  console.log(orders);
-
   const handleSubmitOrder = () => {
     api
-      .post("/orders", {
-        total_price: dishesTotalPrice,
-        products: orders,
-        user_id: user?.id,
-      })
+      .post(
+        "/orders",
+        {
+          total_price: dishesTotalPrice,
+          products: cartOrders,
+          user_id: user?.id,
+        },
+        { withCredentials: true }
+      )
       .then(() => {
         toast("Pedido realizado com sucesso.");
-        clearOrders();
+        clearOrdersFromCart();
       })
       .catch(() => toast("Erro ao fazer o pedido."));
   };
@@ -60,7 +62,7 @@ export default function Orders() {
                   key={dish.id}
                   dish={dish}
                   quantity={getQuantity(dish)}
-                  deleteOrder={deleteOrder}
+                  deleteOrderFromCart={deleteOrderFromCart}
                 />
               ))}
           </div>

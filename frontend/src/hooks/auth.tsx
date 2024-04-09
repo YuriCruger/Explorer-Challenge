@@ -80,7 +80,6 @@ function AuthProvider({ children }: AuthProviderProps) {
         user: JSON.parse(user),
       });
     }
-
     setLoading(false);
   }, []);
 

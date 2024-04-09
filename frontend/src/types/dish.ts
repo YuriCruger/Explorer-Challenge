@@ -3,8 +3,8 @@ export interface Dish {
   name: string;
   description: string;
   category: string;
-  price: string;
-  image: string;
+  price: number;
+  image: string | File;
   ingredients: Ingredient[];
   isFavorite: { [userId: string]: boolean };
   created_at: string;

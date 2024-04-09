@@ -12,6 +12,7 @@ const dishImageController = new DishImageController();
 const dishesRoutes = Router();
 const upload = multer(uploadConfig.MULTER);
 
+dishesRoutes.use(ensureAuthenticated);
 dishesRoutes.post("/", upload.single("image"), dishesController.create);
 dishesRoutes.get("/", dishesController.index);
 dishesRoutes.patch("/:id", dishesController.update);

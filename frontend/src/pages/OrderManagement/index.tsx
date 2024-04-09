@@ -19,9 +19,13 @@ export default function OrderManagement() {
   const [orderStatusChanges, setOrderStatusChanges] = useState<{
     [key: number]: string;
   }>({});
+  const [openRows, setOpenRows] = useState<{ [key: number]: boolean }>({});
 
   useEffect(() => {
-    api.get("/orders").then((response) => setOrders(response.data));
+    api
+      .get("/orders", { withCredentials: true })
+      .then((response) => setOrders(response.data))
+      .catch((error) => toast(error.response.data.message));
   }, []);
 
   const handleStatusChange = (
@@ -38,7 +42,11 @@ export default function OrderManagement() {
     const promises = Object.entries(orderStatusChanges).map(
       ([orderId, status]) => {
         const updated_at = new Date().toISOString();
-        return api.patch("/orders", { updated_at, status, order_id: orderId });
+        return api.patch(
+          "/orders",
+          { updated_at, status, order_id: orderId },
+          { withCredentials: true }
+        );
       }
     );
 
@@ -63,7 +71,7 @@ export default function OrderManagement() {
 
   const handleConfirmDelete = () => {
     api
-      .delete(`/orders/${deletingOrderId}`)
+      .delete(`/orders/${deletingOrderId}`, { withCredentials: true })
       .then(() => {
         toast("Pedido deletado com sucesso.");
         setDeleteConfirmationModalOpen(false);
@@ -79,6 +87,13 @@ export default function OrderManagement() {
         setDeleteConfirmationModalOpen(false);
         setDeletingOrderId(null);
       });
+  };
+
+  const handleToggleRow = (orderId: number) => {
+    setOpenRows((prevOpenRows) => ({
+      ...prevOpenRows,
+      [orderId]: !prevOpenRows[orderId],
+    }));
   };
 
   return (
@@ -102,41 +117,81 @@ export default function OrderManagement() {
                   <TableHeader name="" />
                 </tr>
               </thead>
-              <tbody className="bg-dark-700 divide-y-2 divide-light-500">
-                {orders.map((order) => (
-                  <tr key={order.id} className="00">
-                    <TableCell name={order.id} />
-                    <TableCell name={order.user_id} />
-                    <TableCell
-                      name={order.products
-                        .map(
-                          (product) => `${product.name} (${product.quantity})`
-                        )
-                        .join(" - ")}
-                    />
-                    <TableCell name={formatPrice(order.total_price)} />
-                    <TableCell name={formatDate(order.created_at)} />
-                    <td className="p-5">
-                      <select
-                        className="bg-dark-1000 rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-light-100"
-                        value={orderStatusChanges[order.id] || order.status}
-                        onChange={(event) =>
-                          handleStatusChange(order.id, event)
-                        }
-                      >
-                        <option value="not_delivered">Pendente</option>
-                        <option value="delivered">Entregue</option>
-                      </select>
-                    </td>
-                    <td className="p-5">
-                      <button
-                        className="hover:text-red-500 hover:underline transition-all"
-                        onClick={() => handleDeleteOrder(order.id)}
-                      >
-                        Excluir
-                      </button>
-                    </td>
-                  </tr>
+              <tbody className="bg-dark-700 relative">
+                {orders.map((order, index) => (
+                  <>
+                    <tr
+                      key={order.id}
+                      className={` ${
+                        index === orders.length - 1
+                          ? ""
+                          : "border-light-100 border-b"
+                      } ${openRows[order.id] && "border-none"}`}
+                    >
+                      <TableCell name={order.id} />
+                      <TableCell name={order.user_id} />
+                      <td className="p-5">
+                        <button onClick={() => handleToggleRow(order.id)}>
+                          {openRows[order.id] ? "Fechar" : "Ver produtos"}
+                        </button>
+                      </td>
+
+                      <TableCell name={formatPrice(order.total_price)} />
+                      <TableCell name={formatDate(order.created_at)} />
+                      <td className="p-5">
+                        <select
+                          className="bg-dark-1000 rounded-lg p-2 focus:outline-none focus:ring-1 focus:ring-light-100"
+                          value={orderStatusChanges[order.id] || order.status}
+                          onChange={(event) =>
+                            handleStatusChange(order.id, event)
+                          }
+                        >
+                          <option value="not_delivered">Pendente</option>
+                          <option value="delivered">Entregue</option>
+                        </select>
+                      </td>
+                      <td className="p-5">
+                        <button
+                          className="hover:text-red-500 hover:underline transition-all"
+                          onClick={() => handleDeleteOrder(order.id)}
+                        >
+                          Excluir
+                        </button>
+                      </td>
+                    </tr>
+
+                    {openRows[order.id] && (
+                      <>
+                        <tr className="bg-dark-900">
+                          <th colSpan={4} className="p-5">
+                            Produtos
+                          </th>
+                          <th colSpan={3} className="p-5">
+                            Quantidade
+                          </th>
+                        </tr>
+
+                        {order.products.map((product) => (
+                          <tr
+                            key={product.id}
+                            className={`bg-dark-900 ${
+                              index === orders.length - 1
+                                ? ""
+                                : "border-b border-light-600"
+                            }`}
+                          >
+                            <td className="p-5" colSpan={4}>
+                              {product.name}
+                            </td>
+
+                            <td className="p-5" colSpan={3}>
+                              {product.quantity}
+                            </td>
+                          </tr>
+                        ))}
+                      </>
+                    )}
+                  </>
                 ))}
               </tbody>
             </table>

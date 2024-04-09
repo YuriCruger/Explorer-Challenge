@@ -2,93 +2,47 @@ import { PageTitle } from "@/components/PageTitle";
 import { PreviousPageButton } from "@/components/PreviousPageButton";
 import { DishForm } from "@/components/DishForm";
 import { useNavigate, useParams } from "react-router-dom";
-import { useDish } from "@/providers/dishes";
-import { AxiosError, api } from "@/services/api";
+import { useDish } from "@/hooks/dishes";
 import { EditFormSkeleton } from "@/pages/EditDish/components/EditPageSkeleton";
-import { useState } from "react";
 import { DeleteConfirmationModal } from "./components/DeleteConfirmationModal";
 import { toast } from "sonner";
+import { useConfirmModal } from "@/hooks/confirmModal";
+import { Dish } from "@/types/dish";
 
 export default function EditDish() {
-  const [isDeleteConfirmationModalOpen, setDeleteConfirmationModalOpen] =
-    useState(false);
   const { id } = useParams();
-  const { dishList, fetchAllDishes } = useDish();
+  const {
+    handleDeleteDish,
+    handleCancelDelete,
+    isDeleteConfirmationModalOpen,
+  } = useConfirmModal();
+  const { dishList, fetchAllDishes, updateDishImage, updateDish, deleteDish } =
+    useDish();
   const dish = dishList?.find((dish) => dish.id === Number(id));
   const navigate = useNavigate();
 
-  const handleEditDish = (values: any) => {
-    const updateImage = new Promise<void>((resolve, reject) => {
-      const imageFormData = new FormData();
-      if (values.image instanceof Blob) {
-        imageFormData.append("image", values.image);
-        api
-          .patch(`/dishes/image/${id}`, imageFormData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then(() => {
-            resolve();
-          })
-          .catch((error) => {
-            const axiosError = error as AxiosError;
-            if (axiosError.response) {
-              toast(axiosError.response.data.message);
-            }
-            reject();
-          });
-      } else {
-        resolve();
-      }
-    });
-
-    const updateDish = api
-      .patch(`/dishes/${id}`, {
-        name: values.name,
-        category: values.category,
-        ingredients: values.ingredients.join(","),
-        price: values.price,
-        description: values.description,
-      })
-      .catch((error) => {
-        const axiosError = error as AxiosError;
-        if (axiosError.response) {
-          toast(axiosError.response.data.message);
-        }
-      });
-
-    Promise.all([updateImage, updateDish])
-      .then(() => {
-        toast("Prato atualizado com sucesso");
-        fetchAllDishes();
-      })
-      .catch(() => {
-        toast(
-          "Erro ao atualizar o prato, por favor tente novamente mais tarde."
-        );
-      });
+  const handleEditDish = async (values: Dish) => {
+    try {
+      await Promise.all([
+        updateDishImage(values.image, id),
+        updateDish(values, id),
+      ]);
+      fetchAllDishes();
+      toast("Prato atualizado com sucesso");
+    } catch (error) {
+      console.error("Erro ao atualizar o prato:", error);
+      toast("Erro ao atualizar o prato, por favor tente novamente mais tarde.");
+    }
   };
 
-  const handleDeleteDish = () => {
-    setDeleteConfirmationModalOpen(true);
-  };
-
-  const handleCancelDelete = () => {
-    setDeleteConfirmationModalOpen(false);
-  };
-
-  const handleConfirmDelete = () => {
-    setDeleteConfirmationModalOpen(false);
-    api
-      .delete(`/dishes/${id}`)
-      .then(() => {
-        toast("Prato deletado com sucesso.");
-        navigate("/");
-      })
-      .catch(() => {
-        toast("Erro ao deletar o prato, por favor tente novamente mais tarde.");
-      });
+  const handleConfirmDelete = async () => {
+    handleCancelDelete();
+    try {
+      await deleteDish(id);
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

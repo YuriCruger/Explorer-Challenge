@@ -1,7 +1,7 @@
 import { formatPrice } from "@/utils/formatPrice";
 import { PiPencilSimpleBold } from "react-icons/pi";
 import { CiHeart } from "react-icons/ci";
-import { useAuth } from "@/providers/auth";
+import { useAuth } from "@/hooks/auth";
 import { USER_ROLES } from "@/utils/roles";
 import { Button } from "../../../../components/Button";
 import { IoIosArrowForward } from "react-icons/io";
@@ -9,17 +9,18 @@ import { Link } from "react-router-dom";
 import { QuantityCounter } from "../../../../components/QuantityCounter";
 import { Ingredient } from "@/types/dish";
 import { useState } from "react";
-import { useOrders } from "@/providers/orders";
+import { useOrders } from "@/hooks/cartOrders";
 import { toast } from "sonner";
 import { IoMdHeart } from "react-icons/io";
 import { api } from "@/services/api";
 import { FavoriteButton } from "@/components/FavoriteButton";
 import { cn } from "@/utils/cn";
+import { useDish } from "@/hooks/dishes";
 
 interface DishCardProps {
   name: string;
-  price: string;
-  img: string;
+  price: number;
+  img: string | File;
   id: number;
   ingredients: Ingredient[];
   isFavorite: { [userId: string]: boolean };
@@ -36,13 +37,14 @@ export function DishCard({
   className,
 }: DishCardProps) {
   const { role, user } = useAuth();
-  const { addOrder } = useOrders();
+  const { addOrderToCart } = useOrders();
   const formattedPrice = formatPrice(Number(price));
   const [quantity, setQuantity] = useState(1);
   const [favorite, setFavorite] = useState(user ? isFavorite[user.id] : false);
+  const { fetchAllDishes } = useDish();
 
   const handleAddToCart = () => {
-    addOrder(id, name, quantity);
+    addOrderToCart(id, name, quantity);
     setQuantity(1);
     toast("Produto adicionado ao carrinho.");
   };
@@ -67,19 +69,27 @@ export function DishCard({
     }
     if (!favorite) {
       api
-        .post("/favorite-products", {
-          product_id: id,
-          user_id: user.id,
-        })
+        .post(
+          "/favorite-products",
+          {
+            product_id: id,
+            user_id: user.id,
+          },
+          { withCredentials: true }
+        )
         .then(() => {
           setFavorite(true);
+          fetchAllDishes();
         });
       return;
     }
 
-    api.delete(`/favorite-products/${user.id}/${id}`).then(() => {
-      setFavorite(false);
-    });
+    api
+      .delete(`/favorite-products/${user.id}/${id}`, { withCredentials: true })
+      .then(() => {
+        setFavorite(false);
+        fetchAllDishes();
+      });
   };
 
   return (
@@ -96,7 +106,7 @@ export function DishCard({
           </button>
         </Link>
       ) : (
-        <div className="absolute right-2 top-2 z-50 overflow-visible">
+        <div className="absolute right-2 top-2 z-10 overflow-visible">
           <FavoriteButton handleFavoriteToggle={handleFavoriteToggle}>
             {favorite ? (
               <IoMdHeart size={28} color="red" />

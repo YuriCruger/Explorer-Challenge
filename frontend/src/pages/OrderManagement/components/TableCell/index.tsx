@@ -1,7 +1,9 @@
-interface TableCellProps {
+import { HTMLAttributes } from "react";
+
+interface TableCellProps extends HTMLAttributes<HTMLTableDataCellElement> {
   name: string | number;
 }
 
-export function TableCell({ name }: TableCellProps) {
-  return <td className="p-5">{name}</td>;
+export function TableCell({ name, ...props }: TableCellProps) {
+  return <td {...props}>{name}</td>;
 }

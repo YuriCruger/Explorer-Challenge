@@ -34,15 +34,6 @@ class DishesController {
     await knex("ingredients").insert(ingredientsInsert);
 
     return response.status(201).json();
-    // return response.status(201).json({
-    //   id: dish_id,
-    //   name,
-    //   category,
-    //   price,
-    //   description,
-    //   image: filename,
-    //   ingredients: ingredientsInsert,
-    // });
   }
 
   async index(request, response) {

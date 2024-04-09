@@ -1,14 +1,14 @@
+import { useFormContext } from "react-hook-form";
 import { FiUpload } from "react-icons/fi";
 
 interface FileUploadButtonProps {
   title: string;
-  onFileChange: any;
+  isEdit: boolean;
 }
 
-export const FileUploadButton = ({
-  title,
-  onFileChange,
-}: FileUploadButtonProps) => {
+export const FileUploadButton = ({ title, isEdit }: FileUploadButtonProps) => {
+  const { register } = useFormContext();
+
   return (
     <label
       htmlFor="dish-image"
@@ -17,11 +17,11 @@ export const FileUploadButton = ({
       <FiUpload size={20} />
       {title}
       <input
-        onChange={onFileChange}
         className="hidden"
         id="dish-image"
         type="file"
         accept="image/*"
+        {...register("image")}
       />
     </label>
   );

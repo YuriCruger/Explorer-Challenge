@@ -2,15 +2,14 @@ import { ChangeEvent, useState } from "react";
 import { HiMenu, HiOutlineX } from "react-icons/hi";
 import { PiReceiptLight } from "react-icons/pi";
 import { Menu } from "./components/Menu";
-import { Input } from "../Input";
 import { Button } from "../Button";
-import { HiMiniMagnifyingGlass } from "react-icons/hi2";
 import { MdLogout } from "react-icons/md";
-import { useAuth } from "@/providers/auth";
+import { useAuth } from "@/hooks/auth";
 import { USER_ROLES } from "@/utils/roles";
 import { Link, useNavigate } from "react-router-dom";
-import { useSearch } from "@/providers/search";
-import { useOrders } from "@/providers/orders";
+import { useSearch } from "@/hooks/search";
+import { useOrders } from "@/hooks/cartOrders";
+import { FilterInput } from "../FilterInput";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -47,26 +46,30 @@ export function Header() {
         {isMenuOpen && <p className="text-2xl">Menu</p>}
       </div>
 
+      <div
+        className={`flex items-center mx-auto lg:flex-col lg:items-end lg:flex ${
+          isMenuOpen && "hidden"
+        }`}
+      >
+        <Link to="/">
+          <div className="flex items-center gap-3 pr-2 lg:pr-0">
+            <img
+              src="/polygon.png"
+              alt="food explorer logo"
+              className="h-[26px]"
+            />
+            <span className="font-bold text-2xl whitespace-nowrap">
+              food explorer
+            </span>
+          </div>
+        </Link>
+        {role && [USER_ROLES.ADMIN].includes(role) && (
+          <span className="text-cake-200 text-xs">admin</span>
+        )}
+      </div>
+
       {!isMenuOpen && (
         <>
-          <div className="flex items-center mx-auto lg:flex-col lg:items-end">
-            <Link to="/">
-              <div className="flex items-center gap-3 pr-2 lg:pr-0">
-                <img
-                  src="/polygon.png"
-                  alt="food explorer logo"
-                  className="h-[26px]"
-                />
-                <span className="font-bold text-2xl whitespace-nowrap">
-                  food explorer
-                </span>
-              </div>
-            </Link>
-            {role && [USER_ROLES.ADMIN].includes(role) && (
-              <span className="text-cake-200 text-xs">admin</span>
-            )}
-          </div>
-
           {role !== USER_ROLES.ADMIN && (
             <Link to="/orders">
               <div className="relative lg:hidden">
@@ -89,16 +92,7 @@ export function Header() {
         />
       )}
 
-      <div className="relative flex-1 hidden lg:block">
-        <div className="text-light-500 absolute translate-y-[-50%] top-[50%] left-4">
-          <HiMiniMagnifyingGlass size={26} />
-        </div>
-        <Input
-          placeholder="Busque por pratos ou ingredientes"
-          className="w-full pl-14"
-          onChange={handleSearch}
-        />
-      </div>
+      <FilterInput className="flex-1 hidden lg:block" onChange={handleSearch} />
 
       <div className="hidden lg:block">
         {role === USER_ROLES.ADMIN ? (

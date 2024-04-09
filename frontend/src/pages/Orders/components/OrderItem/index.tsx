@@ -3,11 +3,15 @@ import { formatPrice } from "@/utils/formatPrice";
 
 interface OrderItemProps {
   dish: Dish;
-  deleteOrder: (orderId: number) => void;
+  deleteOrderFromCart: (orderId: number) => void;
   quantity: number;
 }
 
-export function OrderItem({ dish, deleteOrder, quantity }: OrderItemProps) {
+export function OrderItem({
+  dish,
+  deleteOrderFromCart,
+  quantity,
+}: OrderItemProps) {
   return (
     <div className="py-5 flex flex-col gap-2 lg:flex-row">
       <div>
@@ -37,7 +41,7 @@ export function OrderItem({ dish, deleteOrder, quantity }: OrderItemProps) {
         <p className="text-2xl font-bold">{formatPrice(dish.price)}</p>
 
         <button
-          onClick={() => deleteOrder(dish.id)}
+          onClick={() => deleteOrderFromCart(dish.id)}
           className="mt-auto text-tomato-200 hover:underline lg:ml-auto"
         >
           Remover

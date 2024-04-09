@@ -1,24 +1,34 @@
-import { useState } from "react";
+import { useIngredients } from "@/hooks/ingredients";
+import { useRef } from "react";
 import { IoIosAdd } from "react-icons/io";
 
-export function AddNewIngredient({ handleNewIngredient }: any) {
-  const [newIngredientName, setNewIngredientName] = useState("");
+export function AddNewIngredient() {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { addIngredientToList } = useIngredients();
 
-  function addNewIngredient() {
-    handleNewIngredient(newIngredientName);
-    setNewIngredientName("");
-  }
+  const addNewIngredient = () => {
+    const newIngredientName = inputRef.current?.value
+      .trim()
+      .toLocaleLowerCase();
+    if (newIngredientName) {
+      addIngredientToList(newIngredientName);
+      inputRef.current!.value = "";
+    }
+  };
 
   return (
     <div className="flex items-center border-2 border-dashed border-light-500 rounded-lg px-2 py-1 w-fit">
       <input
+        ref={inputRef}
         id="ingredients"
-        value={newIngredientName}
-        onChange={(e) =>
-          setNewIngredientName(e.target.value.toLocaleLowerCase())
-        }
-        className="bg-transparent focus:outline-none placeholder:text-light-500"
+        className="bg-transparent text-light-100 focus:outline-none placeholder:text-light-500"
         placeholder="Adicionar"
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            addNewIngredient();
+          }
+        }}
       />
       <button
         onClick={addNewIngredient}

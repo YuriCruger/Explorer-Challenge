@@ -1,21 +1,17 @@
 import { PageTitle } from "@/components/PageTitle";
 import { PreviousPageButton } from "@/components/PreviousPageButton";
-import { useDish } from "@/providers/dishes";
+import { useDish } from "@/hooks/dishes";
 import { DishCard } from "../Home/components/DishCard";
-import { useAuth } from "@/providers/auth";
-import { useEffect } from "react";
+import { useAuth } from "@/hooks/auth";
 
 export default function Favorites() {
-  const { dishList, fetchAllDishes } = useDish();
+  const { dishList } = useDish();
   const { user } = useAuth();
-
-  useEffect(() => {
-    fetchAllDishes();
-  }, []);
 
   const favoriteDishes = dishList?.filter(
     (dish) => user && dish.isFavorite[user.id]
   );
+
   return (
     <div className="px-7 pt-3 pb-12 xl:px-32">
       <PreviousPageButton />

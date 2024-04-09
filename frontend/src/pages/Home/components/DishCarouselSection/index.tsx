@@ -4,7 +4,7 @@ import { Navigation } from "swiper/modules";
 import { SectionTitle } from "@/components/SectionTitle";
 import { DishCard } from "@/pages/Home/components/DishCard";
 import { Dish } from "@/types/dish";
-import { useSearch } from "@/providers/search";
+import { useSearch } from "@/hooks/search";
 
 interface DishCarouselSectionProps {
   dishList: Dish[] | null;

@@ -2,27 +2,33 @@ import { Button } from "@/components/Button";
 import { IngredientsList } from "@/components/IngredientsList";
 import { PreviousPageButton } from "@/components/PreviousPageButton";
 import { QuantityCounter } from "@/components/QuantityCounter";
-import { useAuth } from "@/providers/auth";
-import { useDish } from "@/providers/dishes";
-import { useOrders } from "@/providers/orders";
+import { useAuth } from "@/hooks/auth";
+import { useDish } from "@/hooks/dishes";
+import { useOrders } from "@/hooks/cartOrders";
+import { Dish } from "@/types/dish";
 import { USER_ROLES } from "@/utils/roles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { NotFound } from "../NotFound";
 
 export default function DishPage() {
   const { dishList, fetchErrorOccurred } = useDish();
   const { role } = useAuth();
   const { id } = useParams();
-  const { addOrder } = useOrders();
+  const { addOrderToCart } = useOrders();
   const [quantity, setQuantity] = useState(1);
+  const [dish, setDish] = useState<Dish | undefined>(undefined);
 
-  const dish = dishList?.find((dish) => dish.id === Number(id));
+  useEffect(() => {
+    const dish = dishList?.find((dish) => dish.id === Number(id));
+    setDish(dish);
+  }, [dishList, id]);
 
   const handleAddToCart = () => {
     if (dish) {
-      addOrder(dish.id, dish.name, quantity);
+      addOrderToCart(dish.id, dish.name, quantity);
       setQuantity(1);
     }
   };
@@ -45,6 +51,10 @@ export default function DishPage() {
     toast(
       "Ocorreu um erro ao buscar o prato. Por favor, tente novamente mais tarde."
     );
+  }
+
+  if (!dish) {
+    return <NotFound />;
   }
 
   return (
@@ -80,7 +90,10 @@ export default function DishPage() {
             {role === USER_ROLES.ADMIN ? (
               <div>
                 <Link to={`/edit-dish/${dish.id}`}>
-                  <Button title="Editar prato" className="lg:max-w-[162px]" />
+                  <Button
+                    title="Editar prato"
+                    className="max-w-[370px] px-10"
+                  />
                 </Link>
               </div>
             ) : (
@@ -94,7 +107,7 @@ export default function DishPage() {
                 <Button
                   onClick={handleAddToCart}
                   title="Pedir"
-                  className="flex-1 max-w-[370px] lg:max-w-[162px]"
+                  className="flex-1 w-[370px] px-10"
                 />
               </div>
             )}
