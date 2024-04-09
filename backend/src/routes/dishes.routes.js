@@ -20,7 +20,7 @@ dishesRoutes.post(
   verifyUserAuthorization("admin"),
   dishesController.create
 );
-dishesRoutes.get("/", verifyUserAuthorization("admin"), dishesController.index);
+dishesRoutes.get("/", dishesController.index);
 dishesRoutes.patch(
   "/:id",
   verifyUserAuthorization("admin"),

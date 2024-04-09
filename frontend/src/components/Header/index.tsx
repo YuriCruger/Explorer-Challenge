@@ -15,7 +15,7 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { signOut, role } = useAuth();
   const { updateSearchState } = useSearch();
-  const { orders } = useOrders();
+  const { cartOrders } = useOrders();
   const navigate = useNavigate();
 
   function toggleMenu() {
@@ -75,7 +75,7 @@ export function Header() {
               <div className="relative lg:hidden">
                 <PiReceiptLight size={26} />
                 <span className="bg-tomato-100 rounded-full h-5 w-5 absolute -top-1.5 -right-1.5 flex items-center justify-center">
-                  {orders.length}
+                  {cartOrders.length}
                 </span>
               </div>
             </Link>
@@ -116,7 +116,7 @@ export function Header() {
 
             <Link to="/orders">
               <Button
-                title={`Pedidos (${orders.length})`}
+                title={`Pedidos (${cartOrders.length})`}
                 className="flex items-center justify-center gap-1 w-[180px]"
               >
                 <PiReceiptLight size={26} />
