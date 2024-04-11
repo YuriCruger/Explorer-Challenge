@@ -28,7 +28,7 @@ class StripeController {
           },
         },
         success_url: "http://localhost:5173/payment-success",
-        cancel_url: "http://localhost:5173/orders",
+        cancel_url: "http://localhost:5173/cart-orders",
       });
 
       response.json({ sessionId: session.id });

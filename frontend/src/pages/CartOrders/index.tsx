@@ -10,9 +10,11 @@ import { api } from "@/services/api";
 import { useAuth } from "@/hooks/auth";
 import { toast } from "sonner";
 import { loadStripe } from "@stripe/stripe-js";
+import { useState } from "react";
 
-export default function Orders() {
+export default function CartOrders() {
   const { cartOrders, deleteOrderFromCart } = useOrders();
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const { dishList } = useDish();
   const { user } = useAuth();
 
@@ -31,6 +33,7 @@ export default function Orders() {
   );
 
   const makePayment = async () => {
+    setIsProcessingPayment(true);
     try {
       const response = await api.post(
         "/stripe/create-checkout-session",
@@ -54,6 +57,8 @@ export default function Orders() {
     } catch (error) {
       console.error("Erro ao criar sessão de checkout:", error);
       toast("Erro ao iniciar o pagamento. Por favor, tente novamente.");
+    } finally {
+      setIsProcessingPayment(false);
     }
   };
 
@@ -83,8 +88,9 @@ export default function Orders() {
             </p>
             <Button
               title="Finalizar compra"
-              className="lg:w-[172px]"
+              className={`lg:w-[172px] ${isProcessingPayment && "opacity-50"}`}
               onClick={makePayment}
+              disabled={isProcessingPayment}
             />
           </div>
         </>

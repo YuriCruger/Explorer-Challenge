@@ -33,7 +33,7 @@ export function Menu({
 
   function handleOrdersPageNavigation() {
     toggleMenu();
-    navigate("/orders");
+    navigate("/cart-orders");
   }
 
   function handleOrdersManagementPageNavigation() {
@@ -65,7 +65,7 @@ export function Menu({
                 onClick={handleFavoritesPageNavigation}
               />
               <MenuButton
-                title="Pedidos"
+                title="Carrinho"
                 onClick={handleOrdersPageNavigation}
               />
             </>

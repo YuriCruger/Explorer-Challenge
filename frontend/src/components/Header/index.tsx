@@ -114,7 +114,7 @@ export function Header() {
               />
             </Link>
 
-            <Link to="/orders">
+            <Link to="/cart-orders">
               <Button
                 title={`Carrinho (${cartOrders.length})`}
                 className="flex items-center justify-center gap-1 w-[180px]"
