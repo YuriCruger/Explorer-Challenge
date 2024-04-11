@@ -162,7 +162,7 @@ export function DishForm({
         <div className="flex flex-col gap-6 lg:flex-row">
           <FormGroup className="lg:w-fit">
             <Label title="Imagem do prato" htmlFor="dish-image" />
-            <FileUploadButton title="Selecione uma imagem" isEdit={isEdit} />
+            <FileUploadButton title="Selecione uma imagem" />
             {errors.image && (
               <p className="text-red-500 text-sm">
                 {String(errors.image.message)}

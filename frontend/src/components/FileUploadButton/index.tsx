@@ -3,10 +3,9 @@ import { FiUpload } from "react-icons/fi";
 
 interface FileUploadButtonProps {
   title: string;
-  isEdit: boolean;
 }
 
-export const FileUploadButton = ({ title, isEdit }: FileUploadButtonProps) => {
+export const FileUploadButton = ({ title }: FileUploadButtonProps) => {
   const { register } = useFormContext();
 
   return (
