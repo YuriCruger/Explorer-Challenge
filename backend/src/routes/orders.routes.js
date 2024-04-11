@@ -8,16 +8,22 @@ const ordersRoutes = Router();
 
 const ordersController = new OrdersController();
 
-ordersRoutes.use(ensureAuthenticated);
 ordersRoutes.post("/", ordersController.create);
-ordersRoutes.get("/", verifyUserAuthorization("admin"), ordersController.index);
+ordersRoutes.get(
+  "/",
+  ensureAuthenticated,
+  verifyUserAuthorization("admin"),
+  ordersController.index
+);
 ordersRoutes.patch(
   "/",
+  ensureAuthenticated,
   verifyUserAuthorization("admin"),
   ordersController.update
 );
 ordersRoutes.delete(
   "/:order_id",
+  ensureAuthenticated,
   verifyUserAuthorization("admin"),
   ordersController.delete
 );

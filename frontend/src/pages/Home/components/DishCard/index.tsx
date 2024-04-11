@@ -44,7 +44,7 @@ export function DishCard({
   const { fetchAllDishes } = useDish();
 
   const handleAddToCart = () => {
-    addOrderToCart(id, name, quantity);
+    addOrderToCart(id, name, quantity, price);
     setQuantity(1);
     toast("Produto adicionado ao carrinho.");
   };

@@ -116,7 +116,7 @@ export function Header() {
 
             <Link to="/orders">
               <Button
-                title={`Pedidos (${cartOrders.length})`}
+                title={`Carrinho (${cartOrders.length})`}
                 className="flex items-center justify-center gap-1 w-[180px]"
               >
                 <PiReceiptLight size={26} />

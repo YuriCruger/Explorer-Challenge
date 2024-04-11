@@ -14,13 +14,15 @@ interface Orders {
   id: number;
   name: string;
   quantity: number;
+  price: number;
 }
 
 interface CartOrdersContextProps {
   addOrderToCart: (
     orderId: number,
     orderName: string,
-    orderQuantity: number
+    orderQuantity: number,
+    orderPrice: number
   ) => void;
   deleteOrderFromCart: (orderId: number) => void;
   clearOrdersFromCart: () => void;
@@ -38,7 +40,8 @@ const CartOrdersProvider = ({ children }: CartOrdersProviderProps) => {
   const addOrderToCart = (
     orderId: number,
     orderName: string,
-    orderQuantity: number
+    orderQuantity: number,
+    orderPrice: number
   ) => {
     if (cartOrders.some((order) => order.id === orderId)) {
       setCartOrders(
@@ -52,7 +55,12 @@ const CartOrdersProvider = ({ children }: CartOrdersProviderProps) => {
     }
     setCartOrders([
       ...cartOrders,
-      { id: orderId, name: orderName, quantity: orderQuantity },
+      {
+        id: orderId,
+        name: orderName,
+        quantity: orderQuantity,
+        price: orderPrice,
+      },
     ]);
   };
 

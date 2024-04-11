@@ -7,8 +7,15 @@ const routes = require("./routes");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 const uploadConfig = require("./configs/upload");
+const StripeController = require("./controller/StripeController");
+const stripeController = new StripeController();
 
 const app = express();
+app.post(
+  "/stripe/webhook",
+  express.raw({ type: "application/json" }),
+  stripeController.handleWebhook
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use(

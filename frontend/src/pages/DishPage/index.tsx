@@ -28,7 +28,7 @@ export default function DishPage() {
 
   const handleAddToCart = () => {
     if (dish) {
-      addOrderToCart(dish.id, dish.name, quantity);
+      addOrderToCart(dish.id, dish.name, quantity, dish.price);
       setQuantity(1);
     }
   };

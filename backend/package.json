@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -20,7 +21,8 @@
     "knex": "^3.1.0",
     "multer": "^1.4.5-lts.1",
     "sqlite": "^5.1.1",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "stripe": "^14.24.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.0"
