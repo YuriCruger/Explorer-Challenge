@@ -14,6 +14,7 @@ class DishesController {
     }
 
     const diskStorage = new DiskStorage();
+
     const filename = await diskStorage.saveFile(imageFilename);
 
     const [dish_id] = await knex("dishes").insert({
@@ -90,8 +91,6 @@ class DishesController {
     };
 
     await knex("dishes").where({ id }).update(updatedDish);
-
-    console.log(ingredients);
 
     const ingredientsArray = ingredients.split(",");
 
