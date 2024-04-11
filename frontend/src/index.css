@@ -22,25 +22,27 @@ input::-webkit-inner-spin-button {
   top: 0 !important;
   margin-top: 0 !important;
   right: 0 !important;
-  width: 80px !important;
+  width: 220px !important;
+
+  @media screen and (max-width: 1800px) {
+    width: 80px !important;
+  }
 }
 
 .swiper-button-prev {
   left: 0 !important;
   background: linear-gradient(
     90deg,
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(13, 13, 13, 0.1) 35%,
-    rgba(107, 107, 107, 0.07) 100%
+    rgba(0, 10, 15, 0.2725) 0%,
+    rgba(0, 10, 15, 1) 100%
   ) !important;
 }
 
 .swiper-button-next {
   background: linear-gradient(
     270deg,
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(13, 13, 13, 0.1) 35%,
-    rgba(107, 107, 107, 0.07) 100%
+    rgba(0, 10, 15, 0.2725) 0%,
+    rgba(0, 10, 15, 1) 100%
   ) !important;
 }
 
