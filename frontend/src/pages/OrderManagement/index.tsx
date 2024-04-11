@@ -5,7 +5,7 @@ import { api } from "@/services/api";
 import { Order } from "@/types/order";
 import { formatDate } from "@/utils/formatDate";
 import { formatPrice } from "@/utils/formatPrice";
-import { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import { TableHeader } from "./components/TableHeader";
 import { TableCell } from "./components/TableCell";
@@ -119,9 +119,8 @@ export default function OrderManagement() {
               </thead>
               <tbody className="bg-dark-700 relative">
                 {orders.map((order, index) => (
-                  <>
+                  <React.Fragment key={order.id}>
                     <tr
-                      key={order.id}
                       className={` ${
                         index === orders.length - 1
                           ? ""
@@ -191,7 +190,7 @@ export default function OrderManagement() {
                         ))}
                       </>
                     )}
-                  </>
+                  </React.Fragment>
                 ))}
               </tbody>
             </table>
