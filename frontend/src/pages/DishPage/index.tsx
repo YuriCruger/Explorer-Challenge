@@ -15,7 +15,7 @@ import { NotFound } from "../NotFound";
 
 export default function DishPage() {
   const { dishList, fetchErrorOccurred } = useDish();
-  const { role } = useAuth();
+  const { user } = useAuth();
   const { id } = useParams();
   const { addOrderToCart } = useOrders();
   const [quantity, setQuantity] = useState(1);
@@ -87,7 +87,7 @@ export default function DishPage() {
               ))}
             </div>
 
-            {role === USER_ROLES.ADMIN ? (
+            {user && user.role === USER_ROLES.ADMIN ? (
               <div>
                 <Link to={`/edit-dish/${dish.id}`}>
                   <Button

@@ -13,7 +13,7 @@ import { FilterInput } from "../FilterInput";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { signOut, role } = useAuth();
+  const { signOut, user } = useAuth();
   const { updateSearchState } = useSearch();
   const { cartOrders } = useOrders();
   const navigate = useNavigate();
@@ -63,14 +63,14 @@ export function Header() {
             </span>
           </div>
         </Link>
-        {role && [USER_ROLES.ADMIN].includes(role) && (
+        {user && user.role && [USER_ROLES.ADMIN].includes(user.role) && (
           <span className="text-cake-200 text-xs">admin</span>
         )}
       </div>
 
       {!isMenuOpen && (
         <>
-          {role !== USER_ROLES.ADMIN && (
+          {user && user.role !== USER_ROLES.ADMIN && (
             <Link to="/orders">
               <div className="relative lg:hidden">
                 <PiReceiptLight size={26} />
@@ -86,7 +86,7 @@ export function Header() {
       {isMenuOpen && (
         <Menu
           handleLogout={handleLogout}
-          role={role}
+          role={user?.role}
           toggleMenu={toggleMenu}
           handleSearch={handleSearch}
         />
@@ -95,7 +95,7 @@ export function Header() {
       <FilterInput className="flex-1 hidden lg:block" onChange={handleSearch} />
 
       <div className="hidden lg:block">
-        {role === USER_ROLES.ADMIN ? (
+        {user && user.role === USER_ROLES.ADMIN ? (
           <div className="flex items-center gap-5">
             <Link to="/new-dish">
               <Button title="Novo prato" className="w-[180px] " />

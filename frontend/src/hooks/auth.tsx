@@ -13,19 +13,13 @@ interface User {
   email: string;
   id: number;
   name: string;
-  password: string;
   role: string;
-}
-
-interface dataProps {
-  user: User;
 }
 
 interface createContextProps {
   signIn: ({ email, password }: signInProps) => void;
   signOut: () => void;
   user: User | null;
-  role: string | null;
   loading: boolean;
 }
 
@@ -38,10 +32,10 @@ interface signInProps {
   password: string;
 }
 
-const AuthContext = createContext<createContextProps | null>(null);
+const AuthContext = createContext<createContextProps>({} as createContextProps);
 
 function AuthProvider({ children }: AuthProviderProps) {
-  const [data, setData] = useState<dataProps | null>(null);
+  const [data, setData] = useState<{ user: User | null }>({ user: null });
   const [loading, setLoading] = useState(true);
 
   async function signIn({ email, password }: signInProps) {
@@ -60,6 +54,8 @@ function AuthProvider({ children }: AuthProviderProps) {
       const axiosError = error as AxiosError;
       if (axiosError.response) {
         toast(axiosError.response.data.message);
+      } else {
+        alert("Não foi possível entrar.");
       }
     } finally {
       setLoading(false);
@@ -69,7 +65,7 @@ function AuthProvider({ children }: AuthProviderProps) {
   function signOut() {
     localStorage.removeItem("@explorer:user");
 
-    setData(null);
+    setData({ user: null });
   }
 
   useEffect(() => {
@@ -88,8 +84,7 @@ function AuthProvider({ children }: AuthProviderProps) {
       value={{
         signIn,
         signOut,
-        user: data && data.user,
-        role: data && data.user.role,
+        user: data.user,
         loading,
       }}
     >

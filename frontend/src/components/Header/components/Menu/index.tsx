@@ -7,7 +7,7 @@ import { FilterInput } from "@/components/FilterInput";
 
 interface MenuProps {
   handleLogout: () => void;
-  role: string | null;
+  role: string | undefined;
   toggleMenu: () => void;
   handleSearch: (event: ChangeEvent<HTMLInputElement>) => void;
 }

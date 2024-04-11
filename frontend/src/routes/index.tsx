@@ -6,20 +6,34 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { USER_ROLES } from "@/utils/roles";
 import { AdminRoutes } from "./admin.routes";
+import { useEffect } from "react";
+import { api } from "@/services/api";
 
 export function Routes() {
-  const { user, role, loading } = useAuth();
+  const { user, loading, signOut } = useAuth();
+
+  useEffect(() => {
+    if (user) {
+      api.get("/users/validated").catch((error) => {
+        if (error.response?.status === 401) {
+          signOut();
+        }
+      });
+    }
+  }, []);
 
   function AccessRoutes() {
-    switch (role) {
-      case USER_ROLES.ADMIN:
-        return <AdminRoutes />;
+    if (user) {
+      switch (user.role) {
+        case USER_ROLES.ADMIN:
+          return <AdminRoutes />;
 
-      case USER_ROLES.CLIENT:
-        return <ClientRoutes />;
+        case USER_ROLES.CLIENT:
+          return <ClientRoutes />;
 
-      default:
-        return <ClientRoutes />;
+        default:
+          return <ClientRoutes />;
+      }
     }
   }
 

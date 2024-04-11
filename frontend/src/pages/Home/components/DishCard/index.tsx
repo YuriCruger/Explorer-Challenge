@@ -36,7 +36,7 @@ export function DishCard({
   isFavorite,
   className,
 }: DishCardProps) {
-  const { role, user } = useAuth();
+  const { user } = useAuth();
   const { addOrderToCart } = useOrders();
   const formattedPrice = formatPrice(Number(price));
   const [quantity, setQuantity] = useState(1);
@@ -99,7 +99,7 @@ export function DishCard({
         className
       )}
     >
-      {role === USER_ROLES.ADMIN ? (
+      {user && user.role === USER_ROLES.ADMIN ? (
         <Link to={`edit-dish/${id}`}>
           <button className="text-light-300 absolute right-2 top-2">
             <PiPencilSimpleBold size={28} />
@@ -137,7 +137,7 @@ export function DishCard({
 
       <p className="text-cake-200 text-lg lg:text-4xl">{formattedPrice}</p>
 
-      {role === USER_ROLES.CLIENT && (
+      {user && user.role === USER_ROLES.CLIENT && (
         <div className="space-y-2 w-full flex flex-col items-center lg:flex-row lg:px-10 lg:gap-3">
           <QuantityCounter
             quantity={quantity}
