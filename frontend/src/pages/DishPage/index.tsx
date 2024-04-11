@@ -64,7 +64,7 @@ export default function DishPage() {
       {dish && (
         <div className="text-light-300 flex flex-col items-center pt-3 gap-5 lg:flex-row lg:gap-10 lg:pt-12">
           <img
-            src={`http://localhost:3333/uploads/${dish.image}`}
+            src={`https://explorer-challenge.onrender.com/uploads/${dish.image}`}
             alt={`Foto do prato, ${dish.name}`}
             className="h-[264px] w-[264px] rounded-full lg:h-[490px] lg:w-[490px]"
           />

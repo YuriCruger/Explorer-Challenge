@@ -17,7 +17,7 @@ export function OrderItem({
       <div>
         <div className="flex gap-5">
           <img
-            src={`http://localhost:3333/uploads/${dish.image}`}
+            src={`https://explorer-challenge.onrender.com/uploads/${dish.image}`}
             alt=""
             className="h-[100px] w-[100px] rounded-full lg:w-[176px] lg:h-[176px]"
           />

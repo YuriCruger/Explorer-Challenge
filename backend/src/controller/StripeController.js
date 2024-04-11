@@ -61,7 +61,7 @@ class StripeController {
       const user_id = session.metadata.userId;
 
       await axios
-        .post("http://localhost:3333/orders", {
+        .post("https://explorer-challenge.onrender.com/orders", {
           total_price,
           products,
           user_id,
