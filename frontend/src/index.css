@@ -33,16 +33,16 @@ input::-webkit-inner-spin-button {
   left: 0 !important;
   background: linear-gradient(
     90deg,
-    rgba(0, 10, 15, 0.2725) 0%,
-    rgba(0, 10, 15, 1) 100%
+    rgba(0, 10, 15, 1) 0%,
+    rgba(0, 10, 15, 0.2725) 100%
   ) !important;
 }
 
 .swiper-button-next {
   background: linear-gradient(
     270deg,
-    rgba(0, 10, 15, 0.2725) 0%,
-    rgba(0, 10, 15, 1) 100%
+    rgba(0, 10, 15, 1) 0%,
+    rgba(0, 10, 15, 0.2725) 100%
   ) !important;
 }
 
