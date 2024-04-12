@@ -27,8 +27,8 @@ class StripeController {
             products: JSON.stringify(cartOrders),
           },
         },
-        success_url: "http://localhost:5173/payment-success",
-        cancel_url: "http://localhost:5173/cart-orders",
+        success_url: "https://explorer-challenge.vercel.app/payment-success",
+        cancel_url: "https://explorer-challenge.vercel.app/cart-orders",
       });
 
       response.json({ sessionId: session.id });
