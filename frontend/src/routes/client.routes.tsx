@@ -1,10 +1,10 @@
-import { NotFound } from "@/pages/NotFound";
+import NotFound from "@/pages/NotFound";
 import DishPage from "@/pages/DishPage";
 import Home from "@/pages/Home";
 import { Route, Routes } from "react-router-dom";
 import CartOrders from "@/pages/CartOrders";
 import Favorites from "@/pages/Favorites";
-import { PaymentSuccess } from "@/pages/PaymentSuccess";
+import PaymentSuccess from "@/pages/PaymentSuccess";
 
 export function ClientRoutes() {
   return (

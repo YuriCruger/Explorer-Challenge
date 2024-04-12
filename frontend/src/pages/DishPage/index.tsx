@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { NotFound } from "../NotFound";
+import NotFound from "../NotFound";
 
 export default function DishPage() {
   const { dishList, fetchErrorOccurred } = useDish();
@@ -107,7 +107,7 @@ export default function DishPage() {
                 <Button
                   onClick={handleAddToCart}
                   title="Pedir"
-                  className="flex-1 w-[370px] px-10"
+                  className="flex-1 max-w-[370px] px-10"
                 />
               </div>
             )}

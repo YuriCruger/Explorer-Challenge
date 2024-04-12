@@ -3,7 +3,7 @@ import { useOrders } from "@/hooks/cartOrders";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-export function PaymentSuccess() {
+export default function PaymentSuccess() {
   const { clearOrdersFromCart } = useOrders();
 
   useEffect(() => {
