@@ -39,15 +39,15 @@ export function DishCarouselSection({
       <SectionTitle title={sectionTitle} />
 
       <div className="flex px-7 mb-12 xl:px-32 ">
-        {filteredDishes ? (
-          <Swiper
-            className="ml-0"
-            slidesPerView={"auto"}
-            spaceBetween={30}
-            modules={[Navigation]}
-            navigation
-          >
-            {filteredDishes.map((dish) => {
+        <Swiper
+          className="ml-0"
+          slidesPerView={"auto"}
+          spaceBetween={30}
+          modules={[Navigation]}
+          navigation
+        >
+          {filteredDishes ? (
+            filteredDishes.map((dish) => {
               if (dish.category === category) {
                 return (
                   <SwiperSlide key={dish.id} style={{ width: "auto" }}>
@@ -62,11 +62,17 @@ export function DishCarouselSection({
                   </SwiperSlide>
                 );
               }
-            })}
-          </Swiper>
-        ) : (
-          <DishCardSkeleton />
-        )}
+            })
+          ) : (
+            <SwiperSlide
+              style={{ width: "auto", display: "flex", gap: "30px" }}
+            >
+              {Array.from({ length: 10 }, () => (
+                <DishCardSkeleton />
+              ))}
+            </SwiperSlide>
+          )}
+        </Swiper>
       </div>
     </>
   );

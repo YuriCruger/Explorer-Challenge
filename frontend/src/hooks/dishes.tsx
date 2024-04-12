@@ -123,7 +123,7 @@ function DishProvider({ children }: DishProviderProps) {
       .catch((error) => {
         const axiosError = error as AxiosError;
         if (axiosError.response.data.message) {
-          console.log(axiosError.response.data.message);
+          toast(axiosError.response.data.message);
         } else {
           toast(
             "Erro ao adicionar o produto, por favor tente novamente mais tarde."
