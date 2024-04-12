@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import NotFound from "../NotFound";
 
 export default function DishPage() {
   const { dishList, fetchErrorOccurred } = useDish();
@@ -51,10 +50,6 @@ export default function DishPage() {
     toast(
       "Ocorreu um erro ao buscar o prato. Por favor, tente novamente mais tarde."
     );
-  }
-
-  if (!dish) {
-    return <NotFound />;
   }
 
   return (
