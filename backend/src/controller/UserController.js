@@ -1,20 +1,13 @@
-const knex = require("../database/knex");
-const AppError = require("../utils/AppError");
-const { hash } = require("bcryptjs");
+const UserRepository = require("../repositories/UserRepository");
+const UserService = require("../services/UserService");
 
 class UsersController {
   async create(request, response) {
     const { name, email, password } = request.body;
 
-    const checkUserExists = await knex("users").where({ email });
-
-    if (checkUserExists.length > 0) {
-      throw new AppError("Este email já está em uso.");
-    }
-
-    const hashedPassword = await hash(password, 8);
-
-    await knex("users").insert({ name, email, password: hashedPassword });
+    const userRepository = new UserRepository();
+    const userService = new UserService(userRepository);
+    await userService.register({ name, email, password });
 
     return response.status(201).json();
   }
@@ -22,13 +15,11 @@ class UsersController {
   async index(request, response) {
     const { user } = request;
 
-    const checkUserExists = await knex("users").where({ id: user.id });
+    const userRepository = new UserRepository();
+    const userService = new UserService(userRepository);
+    await userService.getUser({ user });
 
-    if (checkUserExists.length === 0) {
-      throw new AppError("Unauthorized", 401);
-    }
-
-    return response.status(200).json;
+    return response.status(200).json();
   }
 }
 
