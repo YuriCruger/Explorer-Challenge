@@ -67,8 +67,8 @@ export function DishCarouselSection({
             <SwiperSlide
               style={{ width: "auto", display: "flex", gap: "30px" }}
             >
-              {Array.from({ length: 10 }, () => (
-                <DishCardSkeleton />
+              {Array.from({ length: 10 }, (_, index) => (
+                <DishCardSkeleton key={index} />
               ))}
             </SwiperSlide>
           )}
