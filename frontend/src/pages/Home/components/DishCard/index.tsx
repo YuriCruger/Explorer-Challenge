@@ -130,7 +130,7 @@ export function DishCard({
       </Link>
 
       <div className="flex flex-wrap">
-        <p className="text-zinc-400 text-center  line-clamp-3 max-lg:hidden">
+        <p className="text-zinc-400 text-center line-clamp-2 max-lg:hidden">
           {ingredients.map((ingredient) => ingredient.name).join(", ")}.
         </p>
       </div>
