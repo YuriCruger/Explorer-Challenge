@@ -10,7 +10,7 @@ const favoriteProductsRoutes = Router();
 favoriteProductsRoutes.use(ensureAuthenticated);
 favoriteProductsRoutes.post("/", favoriteProductsController.create);
 favoriteProductsRoutes.delete(
-  "/:userId/:productId",
+  "/:user_id/:product_id",
   favoriteProductsController.delete
 );
 

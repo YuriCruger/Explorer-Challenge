@@ -1,20 +1,23 @@
-const knex = require("../database/knex");
+const FavoriteRepository = require("../repositories/favorite/FavoriteRepository");
+const FavoriteService = require("../services/favorite/FavoriteService");
 
 class FavoriteProductsController {
   async create(request, response) {
     const { user_id, product_id } = request.body;
 
-    await knex("favorite_products").insert({ user_id, product_id });
+    const favoriteRepository = new FavoriteRepository();
+    const favoriteService = new FavoriteService(favoriteRepository);
+    await favoriteService.addFavorite({ user_id, product_id });
 
     return response.status(201).json();
   }
 
   async delete(request, response) {
-    const { userId, productId } = request.params;
+    const { user_id, product_id } = request.params;
 
-    await knex("favorite_products")
-      .where({ user_id: userId, product_id: productId })
-      .delete();
+    const favoriteRepository = new FavoriteRepository();
+    const favoriteService = new FavoriteService(favoriteRepository);
+    await favoriteService.removeFavorite({ user_id, product_id });
 
     return response.status(201).json();
   }
