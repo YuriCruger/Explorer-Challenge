@@ -8,7 +8,6 @@ import { useOrders } from "@/hooks/cartOrders";
 import { Dish } from "@/types/dish";
 import { USER_ROLES } from "@/utils/roles";
 import { useEffect, useState } from "react";
-
 import { Link, useParams } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -18,11 +17,13 @@ export default function DishPage() {
   const { id } = useParams();
   const { addOrderToCart } = useOrders();
   const [quantity, setQuantity] = useState(1);
-  const [dish, setDish] = useState<Dish | undefined>(undefined);
+  const [dish, setDish] = useState<Dish | null>(null);
 
   useEffect(() => {
-    const dish = dishList?.find((dish) => dish.id === Number(id));
-    setDish(dish);
+    const foundDish = dishList?.find((d) => d.id === Number(id));
+    if (foundDish !== undefined) {
+      setDish(foundDish);
+    }
   }, [dishList, id]);
 
   const handleAddToCart = () => {

@@ -24,7 +24,9 @@ export const FavoriteButton = ({
 
   return (
     <button
-      className={`button ${animate ? "animate" : ""}`}
+      className={`button hover:scale-110 transition-all ${
+        animate ? "animate" : ""
+      }`}
       onClick={handleClick}
       type="button"
     >

@@ -101,17 +101,17 @@ export function DishCard({
     >
       {user && user.role === USER_ROLES.ADMIN ? (
         <Link to={`edit-dish/${id}`}>
-          <button className="text-light-300 absolute right-2 top-2">
-            <PiPencilSimpleBold size={28} />
+          <button className="text-light-300 absolute right-2 top-2 hover:scale-110 transition-all">
+            <PiPencilSimpleBold size={26} />
           </button>
         </Link>
       ) : (
         <div className="absolute right-2 top-2 z-10 overflow-visible">
           <FavoriteButton handleFavoriteToggle={handleFavoriteToggle}>
             {favorite ? (
-              <IoMdHeart size={28} color="red" />
+              <IoMdHeart size={26} color="red" />
             ) : (
-              <CiHeart size={28} />
+              <CiHeart size={26} />
             )}
           </FavoriteButton>
         </div>
@@ -119,7 +119,7 @@ export function DishCard({
       <img
         src={`https://explorer-challenge.onrender.com/uploads/${img}`}
         alt={`Foto do prato, ${name}`}
-        className="h-[88px] w-[88px] rounded-full lg:w-[176px] lg:h-[176px]"
+        className="h-[88px] w-[88px] rounded-full lg:w-[176px] lg:h-[176px] hover:scale-110 transition-all"
       />
 
       <Link to={`/dish/${id}`}>
@@ -130,7 +130,7 @@ export function DishCard({
       </Link>
 
       <div className="flex flex-wrap">
-        <p className="hidden text-zinc-400 lg:block text-center">
+        <p className="text-zinc-400 text-center  line-clamp-3 max-lg:hidden">
           {ingredients.map((ingredient) => ingredient.name).join(", ")}.
         </p>
       </div>
