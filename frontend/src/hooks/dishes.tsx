@@ -17,8 +17,11 @@ interface createContextProps {
   fetchAllDishes: () => void;
   dishList: Dish[] | null;
   fetchErrorOccurred: boolean;
-  updateDishImage: (values: string | File, id: string | undefined) => void;
-  updateDish: (values: Dish, id: string | undefined) => void;
+  updateDishImage: (
+    values: string | File,
+    id: string | undefined
+  ) => Promise<void>;
+  updateDish: (values: Dish, id: string | undefined) => Promise<void>;
   deleteDish: (id: string | undefined) => void;
   createDish: (values: Dish) => void;
 }
@@ -43,7 +46,7 @@ function DishProvider({ children }: DishProviderProps) {
   async function updateDishImage(
     values: string | File,
     id: string | undefined
-  ) {
+  ): Promise<any> {
     const imageFormData = new FormData();
     if (values instanceof File) {
       imageFormData.append("image", values);
@@ -59,11 +62,15 @@ function DishProvider({ children }: DishProviderProps) {
           if (axiosError.response) {
             console.log(axiosError.response.data.message);
           }
+          throw error;
         });
     }
   }
 
-  async function updateDish(values: Dish, id: string | undefined) {
+  async function updateDish(
+    values: Dish,
+    id: string | undefined
+  ): Promise<any> {
     return api
       .patch(
         `/dishes/${id}`,
@@ -81,6 +88,7 @@ function DishProvider({ children }: DishProviderProps) {
         if (axiosError.response) {
           console.log(axiosError.response.data.message);
         }
+        throw error;
       });
   }
 

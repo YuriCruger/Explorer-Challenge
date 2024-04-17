@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { api } from "@/services/api";
 
 export function Routes() {
-  const { user, loading, signOut } = useAuth();
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     if (user) {
@@ -35,10 +35,6 @@ export function Routes() {
           return <ClientRoutes />;
       }
     }
-  }
-
-  if (loading) {
-    return <div />;
   }
 
   return (
