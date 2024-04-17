@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { FaChevronUp, FaChevronDown } from "react-icons/fa6";
 import { FaCheck } from "react-icons/fa";
-import { DISH_CATEGORIES } from "@/utils/dish-categories";
+import { DISH_CATEGORIES, DishCategories } from "@/utils/dish-categories";
 import { useFormContext } from "react-hook-form";
 
 export const Select = () => {
@@ -60,14 +60,16 @@ export const Select = () => {
           ref={dropdownRef}
           className="bg-dark-900 absolute top-14 z-10 flex-col w-full text-light-500 rounded-lg cursor-pointer divide-y divide-light-500 overflow-hidden shadow shadow-light-500"
         >
-          {Object.keys(DISH_CATEGORIES).map((category) => (
+          {Object.keys(DISH_CATEGORIES).map((categoryKey) => (
             <div
-              key={category}
-              onClick={() => onSelected(category)}
+              key={categoryKey}
+              onClick={() =>
+                onSelected(DISH_CATEGORIES[categoryKey as keyof DishCategories])
+              }
               className="px-3.5 py-3.5 flex items-center justify-between hover:bg-dark-700"
             >
-              <p>{category}</p>
-              {category === categoryName && <FaCheck />}
+              <p>{DISH_CATEGORIES[categoryKey as keyof DishCategories]}</p>
+              {categoryKey === categoryName && <FaCheck />}
             </div>
           ))}
         </div>
