@@ -59,7 +59,7 @@ describe("FavoriteService", () => {
     );
   });
 
-  it("should throw an error when trying to remove a non-existing product", async () => {
+  it("should throw an error when trying to remove a product that doesn't exist in favorites", async () => {
     const product = {
       user_id: "1",
       product_id: "2",

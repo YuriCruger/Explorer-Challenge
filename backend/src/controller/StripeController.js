@@ -27,7 +27,8 @@ class StripeController {
             products: JSON.stringify(cartOrders),
           },
         },
-        success_url: "https://explorer-challenge.vercel.app/payment-success",
+        // success_url: "https://explorer-challenge.vercel.app/payment-success",
+        success_url: "http://localhost:5173/",
         cancel_url: "https://explorer-challenge.vercel.app/cart-orders",
       });
 
@@ -61,7 +62,8 @@ class StripeController {
       const user_id = session.metadata.userId;
 
       await axios
-        .post("https://explorer-challenge.onrender.com/orders", {
+        // .post("https://explorer-challenge.onrender.com/orders", {
+        .post("http://localhost:3333/orders", {
           total_price,
           products,
           user_id,

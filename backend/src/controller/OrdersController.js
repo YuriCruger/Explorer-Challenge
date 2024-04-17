@@ -1,43 +1,35 @@
 const knex = require("../database/knex");
+const OrdersRepository = require("../repositories/orders/OrdersRepository");
+const OrdersService = require("../services/orders/OrdersService");
 
 class OrdersController {
   async create(request, response) {
     const { total_price, products, user_id } = request.body;
 
-    const [order_id] = await knex("orders").insert({ user_id, total_price });
+    const ordersRepository = new OrdersRepository();
+    const ordersService = new OrdersService(ordersRepository);
 
-    const productsInsert = products.map((product) => {
-      return {
-        order_id,
-        name: product.name,
-        quantity: product.quantity,
-      };
-    });
-
-    await knex("order_products").insert(productsInsert);
+    await ordersService.createOrder({ total_price, products, user_id });
 
     return response.status(201).json();
   }
 
   async index(request, response) {
-    const orders = await knex("orders").select("*");
+    const ordersRepository = new OrdersRepository();
+    const ordersService = new OrdersService(ordersRepository);
 
-    const ordersWithProducts = await Promise.all(
-      orders.map(async (order) => {
-        const products = await knex("order_products")
-          .where("order_id", order.id)
-          .select("*");
-        return { ...order, products };
-      })
-    );
+    const orders = await ordersService.showOrders();
 
-    return response.json(ordersWithProducts);
+    return response.json(orders);
   }
 
   async update(request, response) {
     const { updated_at, status, order_id } = request.body;
 
-    await knex("orders").update({ updated_at, status }).where({ id: order_id });
+    const ordersRepository = new OrdersRepository();
+    const ordersService = new OrdersService(ordersRepository);
+
+    await ordersService.updateOrder({ updated_at, status, order_id });
 
     return response.status(201).json();
   }
@@ -45,7 +37,10 @@ class OrdersController {
   async delete(request, response) {
     const { order_id } = request.params;
 
-    await knex("orders").where({ id: order_id }).delete();
+    const ordersRepository = new OrdersRepository();
+    const ordersService = new OrdersService(ordersRepository);
+
+    await ordersService.deleteOrder({ order_id });
 
     return response.status(201).json();
   }
