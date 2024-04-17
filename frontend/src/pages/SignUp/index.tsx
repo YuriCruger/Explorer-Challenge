@@ -10,6 +10,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { toast } from "sonner";
+import { useState } from "react";
 
 const registerSchema = z.object({
   name: z.string().min(1, "Você precisa inserir seu nome"),
@@ -20,6 +21,7 @@ const registerSchema = z.object({
 type userSchemaProps = z.infer<typeof registerSchema>;
 
 export default function SignUp() {
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const createUserForm = useForm<userSchemaProps>({
     resolver: zodResolver(registerSchema),
@@ -29,8 +31,9 @@ export default function SignUp() {
     formState: { errors },
   } = createUserForm;
 
-  function onSubmit(values: userSchemaProps) {
-    api
+  async function onSubmit(values: userSchemaProps) {
+    setLoading(true);
+    await api
       .post("/users", {
         name: values.name,
         email: values.email,
@@ -39,8 +42,10 @@ export default function SignUp() {
       .then(() => {
         toast("Cadastro realizado com sucesso!");
         navigate("/");
+        setLoading(false);
       })
       .catch((error) => {
+        setLoading(false);
         if (error.response) {
           toast(error.response.data.message);
         } else {
@@ -95,7 +100,11 @@ export default function SignUp() {
             )}
           </FormGroup>
 
-          <Button title="Criar uma conta" />
+          <Button
+            title={`${loading ? "Criando" : "Criar uma conta"}`}
+            disabled={loading}
+            className={`${loading && "opacity-50"}`}
+          />
 
           <Link to="/">
             <p className="text-light-100 text-center hover:underline">

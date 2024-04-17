@@ -18,7 +18,7 @@ const loginSchema = z.object({
 type userSchemaProps = z.infer<typeof loginSchema>;
 
 export default function SignIn() {
-  const { signIn } = useAuth();
+  const { signIn, loading } = useAuth();
 
   const loginForm = useForm<userSchemaProps>({
     resolver: zodResolver(loginSchema),
@@ -69,7 +69,11 @@ export default function SignIn() {
             )}
           </FormGroup>
 
-          <Button title="Entrar" />
+          <Button
+            disabled={loading}
+            title={`${loading ? "Conectando" : "Entrar"}`}
+            className={`${loading && "opacity-50"}`}
+          />
 
           <Link to="/register">
             <p className="text-light-100 text-center hover:underline">

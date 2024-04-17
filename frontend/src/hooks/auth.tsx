@@ -36,10 +36,11 @@ const AuthContext = createContext<createContextProps>({} as createContextProps);
 
 function AuthProvider({ children }: AuthProviderProps) {
   const [data, setData] = useState<{ user: User | null }>({ user: null });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   async function signIn({ email, password }: signInProps) {
     try {
+      setLoading(true);
       const response = await api.post(
         "/sessions",
         { email, password },
@@ -51,6 +52,7 @@ function AuthProvider({ children }: AuthProviderProps) {
 
       setData({ user });
     } catch (error) {
+      setLoading(false);
       const axiosError = error as AxiosError;
       if (axiosError.response) {
         toast(axiosError.response.data.message);
