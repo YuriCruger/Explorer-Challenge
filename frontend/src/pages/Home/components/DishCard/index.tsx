@@ -120,8 +120,7 @@ export function DishCard({
         </div>
       )}
       <img
-        src={`http://localhost:3333/uploads/${img}`}
-        // src={`https://explorer-challenge.onrender.com/uploads/${img}`}
+        src={`https://explorer-challenge.onrender.com/uploads/${img}`}
         alt={`Foto do prato, ${name}`}
         className="h-[88px] w-[88px] rounded-full lg:w-[176px] lg:h-[176px] hover:scale-110 transition-all"
       />

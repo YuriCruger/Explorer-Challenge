@@ -56,15 +56,12 @@ class StripeController {
     if (event.type === "payment_intent.succeeded") {
       const session = event.data.object;
 
-      console.log(session.metadata.products);
-
       const products = JSON.parse(session.metadata.products);
       const total_price = session.amount;
       const user_id = session.metadata.userId;
 
       await axios
-        // .post("https://explorer-challenge.onrender.com/orders", {
-        .post("http://localhost:3333/orders", {
+        .post("https://explorer-challenge.onrender.com/orders", {
           total_price,
           products,
           user_id,
@@ -72,8 +69,7 @@ class StripeController {
         .catch((error) => console.error(`Erro: ${error.message}`));
 
       await axios
-        // .delete(`https://explorer-challenge.onrender.com/cart-store/${user_id}`)
-        .delete(`http://localhost:3333/cart-store/${user_id}`)
+        .delete(`https://explorer-challenge.onrender.com/cart-store/${user_id}`)
         .catch((error) => console.error(`Erro: ${error}`));
     }
 

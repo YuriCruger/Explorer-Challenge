@@ -164,29 +164,26 @@ export default function OrderManagement() {
 
                     {openRows[order.id] && (
                       <>
-                        <tr className="bg-dark-1000">
-                          <th colSpan={4} className="p-5">
-                            Produtos
-                          </th>
-                          <th colSpan={3} className="p-5">
-                            Quantidade
-                          </th>
-                        </tr>
-
                         {order.products.map((product) => (
                           <tr
                             key={product.id}
-                            className={`bg-dark-700 ${
+                            className={`bg-dark-1000 ${
                               index === orders.length - 1
                                 ? ""
                                 : "border-b border-light-600"
                             }`}
                           >
-                            <td className="p-5" colSpan={4}>
+                            <td className="p-5 text-start" colSpan={4}>
                               {product.name}
                             </td>
 
-                            <td className="p-5" colSpan={3}>
+                            <td
+                              className="p-5 whitespace-nowrap text-end"
+                              colSpan={3}
+                            >
+                              <p className="inline text-light-400 text-sm">
+                                qtd:
+                              </p>{" "}
                               {product.quantity}
                             </td>
                           </tr>

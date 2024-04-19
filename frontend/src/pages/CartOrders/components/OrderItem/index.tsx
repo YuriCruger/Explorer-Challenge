@@ -19,8 +19,7 @@ export function OrderItem({
       <div>
         <div className="flex gap-5">
           <img
-            // src={`https://explorer-challenge.onrender.com/uploads/${cart_item.image}`}
-            src={`http://localhost:3333/uploads/${cart_item.image}`}
+            src={`https://explorer-challenge.onrender.com/uploads/${cart_item.image}`}
             alt={`Foto do ${cart_item.name}`}
             className="h-[100px] w-[100px] rounded-full lg:w-[176px] lg:h-[176px]"
           />

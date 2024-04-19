@@ -28,6 +28,8 @@ class CartStoreService {
       quantity: cartItem.quantity,
     };
 
+    console.log(cartItems);
+
     await this.cartStoreRepository.createCartItems(cartItems);
     await this.cartStoreRepository.updateCartById({
       cartId,
@@ -57,6 +59,7 @@ class CartStoreService {
   }
 
   async removeCartItem({ userId, itemId }) {
+    console.log("meus dados => ", { userId, itemId });
     const cartItem = await this.cartStoreRepository.fetchCartItemForUser({
       userId,
       itemId,
@@ -69,7 +72,7 @@ class CartStoreService {
       );
     }
 
-    await this.cartStoreRepository.findCartByCartId(cartItem.cart_id);
+    await this.cartStoreRepository.removeCartItem(cartItem.cart_id);
   }
 
   async clearCart(userId) {

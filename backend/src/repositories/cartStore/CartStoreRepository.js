@@ -33,7 +33,7 @@ class CartStoreRepository {
     return cartOrders;
   }
 
-  async findCartByCartId(cart_id) {
+  async removeCartItem(cart_id) {
     await knex("cart_store").where("id", cart_id).del();
   }
 
@@ -69,8 +69,6 @@ class CartStoreRepository {
   async deleteCartByUserId(userId) {
     await knex("cart_store").where("user_id", userId).del();
   }
-
-  async;
 }
 
 module.exports = CartStoreRepository;
