@@ -11,7 +11,7 @@ class StripeController {
         product_data: {
           name: order.name,
         },
-        unit_amount: order.price * 100,
+        unit_amount: Math.round(order.price * 100),
       },
       quantity: order.quantity,
     }));
@@ -27,9 +27,8 @@ class StripeController {
             products: JSON.stringify(cartOrders),
           },
         },
-        // success_url: "https://explorer-challenge.vercel.app/payment-success",
-        success_url: "http://localhost:5173/",
-        cancel_url: "https://explorer-challenge.vercel.app/cart-orders",
+        success_url: process.env.STRIPE_SUCCESS_URL,
+        cancel_url: process.env.STRIPE_CANCEL_URL,
       });
 
       response.json({ sessionId: session.id });
@@ -57,6 +56,8 @@ class StripeController {
     if (event.type === "payment_intent.succeeded") {
       const session = event.data.object;
 
+      console.log(session.metadata.products);
+
       const products = JSON.parse(session.metadata.products);
       const total_price = session.amount;
       const user_id = session.metadata.userId;
@@ -69,6 +70,11 @@ class StripeController {
           user_id,
         })
         .catch((error) => console.error(`Erro: ${error.message}`));
+
+      await axios
+        // .delete(`https://explorer-challenge.onrender.com/cart-store/${user_id}`)
+        .delete(`http://localhost:3333/cart-store/${user_id}`)
+        .catch((error) => console.error(`Erro: ${error}`));
     }
 
     response.json({ received: true });

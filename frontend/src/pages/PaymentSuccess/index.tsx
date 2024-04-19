@@ -1,15 +1,8 @@
 import { Button } from "@/components/Button";
-import { useOrders } from "@/hooks/cartOrders";
-import { useEffect } from "react";
+
 import { Link } from "react-router-dom";
 
 export default function PaymentSuccess() {
-  const { clearOrdersFromCart } = useOrders();
-
-  useEffect(() => {
-    clearOrdersFromCart();
-  }, []);
-
   return (
     <div className="text-light-100 flex items-center justify-center flex-col gap-5 mt-[200px] text-center">
       <h1 className="text-5xl font-bold">Pagamento efetuado com sucesso!</h1>

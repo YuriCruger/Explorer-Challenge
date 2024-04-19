@@ -3,13 +3,21 @@ const authConfig = require("../configs/auth");
 const { verify } = require("jsonwebtoken");
 
 function ensureAuthenticated(request, response, next) {
-  const authHeader = request.headers;
+  const authHeader = request.headers.cookie;
 
-  if (!authHeader.cookie) {
+  if (!authHeader) {
     throw new AppError("JWT token não informado", 401);
   }
 
-  const [, token] = authHeader.cookie.split("token=");
+  const tokenCookie = authHeader
+    .split(";")
+    .find((cookie) => cookie.trim().startsWith("token="));
+
+  if (!tokenCookie) {
+    throw new AppError("JWT token não encontrado no cookie", 401);
+  }
+
+  const token = tokenCookie.split("=")[1];
 
   try {
     const { role, sub: user_id } = verify(token, authConfig.jwt.secret);
@@ -20,8 +28,9 @@ function ensureAuthenticated(request, response, next) {
     };
 
     return next();
-  } catch {
-    throw new AppError("Invalid JWT token", 401);
+  } catch (error) {
+    console.error("Erro ao verificar o token:", error);
+    throw new AppError("Token JWT inválido", 401);
   }
 }
 

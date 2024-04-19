@@ -130,7 +130,10 @@ export default function OrderManagement() {
                       <TableCell name={order.id} />
                       <TableCell name={order.user_id} />
                       <td className="p-5">
-                        <button onClick={() => handleToggleRow(order.id)}>
+                        <button
+                          className="bg-dark-1000 rounded-lg p-2"
+                          onClick={() => handleToggleRow(order.id)}
+                        >
                           {openRows[order.id] ? "Fechar" : "Ver produtos"}
                         </button>
                       </td>
@@ -161,7 +164,7 @@ export default function OrderManagement() {
 
                     {openRows[order.id] && (
                       <>
-                        <tr className="bg-dark-900">
+                        <tr className="bg-dark-1000">
                           <th colSpan={4} className="p-5">
                             Produtos
                           </th>
@@ -173,7 +176,7 @@ export default function OrderManagement() {
                         {order.products.map((product) => (
                           <tr
                             key={product.id}
-                            className={`bg-dark-900 ${
+                            className={`bg-dark-700 ${
                               index === orders.length - 1
                                 ? ""
                                 : "border-b border-light-600"

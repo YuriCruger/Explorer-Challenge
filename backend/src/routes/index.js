@@ -6,6 +6,7 @@ const dishesRouter = require("./dishes.routes");
 const ordersRouter = require("./orders.routes");
 const favoriteProductsRouter = require("./favoriteProducts.routes");
 const stripeRouter = require("./stripe");
+const cartStoreRouter = require("./cartStore.routes");
 
 const routes = Router();
 
@@ -15,5 +16,6 @@ routes.use("/dishes", dishesRouter);
 routes.use("/orders", ordersRouter);
 routes.use("/favorite-products", favoriteProductsRouter);
 routes.use("/stripe", stripeRouter);
+routes.use("/cart-store", cartStoreRouter);
 
 module.exports = routes;

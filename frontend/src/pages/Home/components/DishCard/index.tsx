@@ -9,8 +9,7 @@ import { Link } from "react-router-dom";
 import { QuantityCounter } from "../../../../components/QuantityCounter";
 import { Ingredient } from "@/types/dish";
 import { useState } from "react";
-import { useOrders } from "@/hooks/cartOrders";
-import { toast } from "sonner";
+import { useCartOrders } from "@/hooks/cartOrders";
 import { IoMdHeart } from "react-icons/io";
 import { api } from "@/services/api";
 import { FavoriteButton } from "@/components/FavoriteButton";
@@ -37,16 +36,20 @@ export function DishCard({
   className,
 }: DishCardProps) {
   const { user } = useAuth();
-  const { addOrderToCart } = useOrders();
+  const { addOrderToCart } = useCartOrders();
   const formattedPrice = formatPrice(Number(price));
   const [quantity, setQuantity] = useState(1);
   const [favorite, setFavorite] = useState(user ? isFavorite[user.id] : false);
   const { fetchAllDishes } = useDish();
 
-  const handleAddToCart = () => {
-    addOrderToCart(id, name, quantity, price);
-    setQuantity(1);
-    toast("Produto adicionado ao carrinho.");
+  const handleAddToCartStore = () => {
+    if (user) {
+      addOrderToCart({
+        user_id: user.id,
+        dish_id: id,
+        dish_quantity: quantity,
+      });
+    }
   };
 
   const handleIncrement = () => {
@@ -117,7 +120,8 @@ export function DishCard({
         </div>
       )}
       <img
-        src={`https://explorer-challenge.onrender.com/uploads/${img}`}
+        src={`http://localhost:3333/uploads/${img}`}
+        // src={`https://explorer-challenge.onrender.com/uploads/${img}`}
         alt={`Foto do prato, ${name}`}
         className="h-[88px] w-[88px] rounded-full lg:w-[176px] lg:h-[176px] hover:scale-110 transition-all"
       />
@@ -145,7 +149,7 @@ export function DishCard({
             handleDecrement={handleDecrement}
           />
 
-          <Button title="Incluir" onClick={handleAddToCart} />
+          <Button title="Incluir" onClick={handleAddToCartStore} />
         </div>
       )}
     </div>

@@ -4,7 +4,7 @@ import { PreviousPageButton } from "@/components/PreviousPageButton";
 import { QuantityCounter } from "@/components/QuantityCounter";
 import { useAuth } from "@/hooks/auth";
 import { useDish } from "@/hooks/dishes";
-import { useOrders } from "@/hooks/cartOrders";
+import { useCartOrders } from "@/hooks/cartOrders";
 import { Dish } from "@/types/dish";
 import { USER_ROLES } from "@/utils/roles";
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ export default function DishPage() {
   const { dishList, fetchErrorOccurred } = useDish();
   const { user } = useAuth();
   const { id } = useParams();
-  const { addOrderToCart } = useOrders();
+  const { addOrderToCart } = useCartOrders();
   const [quantity, setQuantity] = useState(1);
   const [dish, setDish] = useState<Dish | null>(null);
 
@@ -26,10 +26,13 @@ export default function DishPage() {
     }
   }, [dishList, id]);
 
-  const handleAddToCart = () => {
-    if (dish) {
-      addOrderToCart(dish.id, dish.name, quantity, dish.price);
-      setQuantity(1);
+  const handleAddToCartStore = () => {
+    if (dish && user) {
+      addOrderToCart({
+        user_id: user?.id,
+        dish_id: dish?.id,
+        dish_quantity: quantity,
+      });
     }
   };
 
@@ -101,7 +104,7 @@ export default function DishPage() {
                 />
 
                 <Button
-                  onClick={handleAddToCart}
+                  onClick={handleAddToCartStore}
                   title="Pedir"
                   className="flex-1 max-w-[370px] px-10"
                 />

@@ -2,35 +2,42 @@ import { PageTitle } from "@/components/PageTitle";
 import { PreviousPageButton } from "@/components/PreviousPageButton";
 import { OrderItem } from "./components/OrderItem";
 import { Button } from "@/components/Button";
-import { useOrders } from "@/hooks/cartOrders";
-import { useDish } from "@/hooks/dishes";
+import { useCartOrders } from "@/hooks/cartOrders";
 import { formatPrice } from "@/utils/formatPrice";
-import { Dish } from "@/types/dish";
 import { api } from "@/services/api";
 import { useAuth } from "@/hooks/auth";
 import { toast } from "sonner";
 import { loadStripe } from "@stripe/stripe-js";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { CartOrderItemProps } from "@/types/cartOrder";
 
 export default function CartOrders() {
-  const { cartOrders, deleteOrderFromCart } = useOrders();
+  const { deleteCartOrder, getCartOrders, cartStore } = useCartOrders();
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
-  const { dishList } = useDish();
   const { user } = useAuth();
 
-  const dishesInCart = dishList?.filter((dish) =>
-    cartOrders.some((order) => order.id === dish.id)
-  );
+  useEffect(() => {
+    if (user) {
+      getCartOrders(user.id);
+    }
+  }, []);
 
-  const getQuantity = (dish: Dish) => {
-    const order = cartOrders.find((order) => order.id === dish.id);
-    return order ? order.quantity : 1;
-  };
+  const cartOrderItems = cartStore?.cartOrderItems;
 
-  const dishesTotalPrice = dishesInCart?.reduce(
-    (total, dish) => total + Number(dish.price) * getQuantity(dish),
-    0
-  );
+  const simplifiedCartItems = cartOrderItems?.map((item: any) => ({
+    name: item.name,
+    quantity: item.quantity,
+    price: item.price,
+  }));
+
+  let totalOrderPrice = 0;
+  const cartOrders = cartStore?.cartOrders;
+
+  if (cartOrders) {
+    cartOrders.forEach((cart: any) => {
+      totalOrderPrice += cart.total_price;
+    });
+  }
 
   const makePayment = async () => {
     setIsProcessingPayment(true);
@@ -38,7 +45,7 @@ export default function CartOrders() {
       const response = await api.post(
         "/stripe/create-checkout-session",
         {
-          cartOrders,
+          cartOrders: simplifiedCartItems,
           userId: user?.id,
         },
         { withCredentials: true }
@@ -66,25 +73,25 @@ export default function CartOrders() {
     <div className="px-7 pt-3 pb-12 xl:px-32">
       <PreviousPageButton />
 
-      {dishesInCart && dishesInCart.length > 0 ? (
+      {cartOrders.length > 0 ? (
         <>
           <PageTitle title="Carrinho de compras" />
 
           <div className="divide-light-500 divide-y-2 text-light-100 bg-dark-600 p-5 rounded-lg">
-            {dishesInCart &&
-              dishesInCart.map((dish) => (
+            {cartOrderItems.length > 0 &&
+              cartOrderItems.map((item: CartOrderItemProps) => (
                 <OrderItem
-                  key={dish.id}
-                  dish={dish}
-                  quantity={getQuantity(dish)}
-                  deleteOrderFromCart={deleteOrderFromCart}
+                  key={item.id}
+                  cart_item={item}
+                  quantity={item.quantity}
+                  deleteCartOrder={deleteCartOrder}
                 />
               ))}
           </div>
 
           <div className="mt-5 flex flex-col gap-2 lg:gap-0 lg:flex-row lg:justify-between">
             <p className="text-3xl font-bold text-light-100">
-              Total: {formatPrice(Number(dishesTotalPrice))}
+              Total: {formatPrice(totalOrderPrice)}
             </p>
             <Button
               title="Finalizar compra"

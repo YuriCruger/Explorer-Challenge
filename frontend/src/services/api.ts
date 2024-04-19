@@ -9,5 +9,6 @@ export interface AxiosError extends Error {
 }
 
 export const api = axios.create({
-  baseURL: "https://explorer-challenge.onrender.com",
+  baseURL: "http://localhost:3333",
+  // baseURL: "https://explorer-challenge.onrender.com",
 });

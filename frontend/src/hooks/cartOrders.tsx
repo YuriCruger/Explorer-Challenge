@@ -1,90 +1,93 @@
+import { api } from "@/services/api";
 import {
-  ReactNode,
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
+  CartStoreProps,
+  addOrderToCartProps,
+  deleteCartOrderProps,
+} from "@/types/cartOrder";
+import { AxiosError } from "axios";
+import { ReactNode, createContext, useContext, useState } from "react";
+import { toast } from "sonner";
 
 interface CartOrdersProviderProps {
   children: ReactNode;
 }
 
-interface Orders {
-  id: number;
-  name: string;
-  quantity: number;
-  price: number;
-}
-
 interface CartOrdersContextProps {
-  addOrderToCart: (
-    orderId: number,
-    orderName: string,
-    orderQuantity: number,
-    orderPrice: number
-  ) => void;
-  deleteOrderFromCart: (orderId: number) => void;
-  clearOrdersFromCart: () => void;
-  cartOrders: Orders[];
+  addOrderToCart: ({
+    user_id,
+    dish_id,
+    dish_quantity,
+  }: addOrderToCartProps) => void;
+  getCartOrders: (userId: number) => void;
+  cartStore: any;
+  deleteCartOrder: ({ user_id, item_id }: deleteCartOrderProps) => void;
 }
 
 const CartOrdersContext = createContext<CartOrdersContextProps | null>(null);
 
 const CartOrdersProvider = ({ children }: CartOrdersProviderProps) => {
-  const [cartOrders, setCartOrders] = useState<Orders[]>(() => {
-    const savedOrders = localStorage.getItem("cartOrders");
-    return savedOrders ? JSON.parse(savedOrders) : [];
-  });
+  const [cartStore, setCartStore] = useState<CartStoreProps | null>(null);
 
-  const addOrderToCart = (
-    orderId: number,
-    orderName: string,
-    orderQuantity: number,
-    orderPrice: number
-  ) => {
-    if (cartOrders.some((order) => order.id === orderId)) {
-      setCartOrders(
-        cartOrders.map((order) =>
-          order.id === orderId
-            ? { ...order, quantity: order.quantity + orderQuantity }
-            : order
-        )
-      );
-      return;
+  const addOrderToCart = async ({
+    user_id,
+    dish_id,
+    dish_quantity,
+  }: addOrderToCartProps) => {
+    await api
+      .post("/cart-store", {
+        userId: user_id,
+        cartItem: {
+          dish_id,
+          quantity: dish_quantity,
+        },
+      })
+      .then(() => {
+        toast("Produto adicionado ao carrinho.");
+        getCartOrders(user_id);
+      })
+      .catch((error) => {
+        toast("Erro ao adicionar o produto ao carrinho");
+        console.log(error.response.data.message);
+      });
+  };
+
+  const getCartOrders = async (userId: number) => {
+    try {
+      const response = await api.get(`/cart-store/${userId}`);
+
+      if (response.data) {
+        setCartStore(response.data);
+      } else {
+        setCartStore(null);
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error.message);
+      }
+      toast(`Erro ao buscar itens do carrinho`);
     }
-    setCartOrders([
-      ...cartOrders,
-      {
-        id: orderId,
-        name: orderName,
-        quantity: orderQuantity,
-        price: orderPrice,
-      },
-    ]);
   };
 
-  const deleteOrderFromCart = (orderId: number) => {
-    setCartOrders((prevState) =>
-      prevState.filter((order) => order.id !== orderId)
-    );
+  const deleteCartOrder = async ({
+    user_id,
+    item_id,
+  }: deleteCartOrderProps) => {
+    await api
+      .delete(`/cart-store/${user_id}/${item_id}`)
+      .then(() => getCartOrders(user_id))
+      .catch((error) => {
+        toast("Erro ao remover o produto do carrinho");
+        console.log(error.response.data.message);
+      });
   };
-
-  const clearOrdersFromCart = () => {
-    setCartOrders([]);
-  };
-
-  useEffect(() => {
-    localStorage.setItem("cartOrders", JSON.stringify(cartOrders));
-  }, [cartOrders]);
 
   return (
     <CartOrdersContext.Provider
       value={{
         addOrderToCart,
-        deleteOrderFromCart,
-        clearOrdersFromCart,
-        cartOrders,
+        getCartOrders,
+        cartStore,
+        deleteCartOrder,
       }}
     >
       {children}
@@ -92,14 +95,14 @@ const CartOrdersProvider = ({ children }: CartOrdersProviderProps) => {
   );
 };
 
-function useOrders() {
+function useCartOrders() {
   const context = useContext(CartOrdersContext);
 
   if (!context) {
-    throw new Error("useOrders must be used within an OrdersProvider");
+    throw new Error("useCartOrders must be used within an OrdersProvider");
   }
 
   return context;
 }
 
-export { CartOrdersProvider, useOrders };
+export { CartOrdersProvider, useCartOrders };

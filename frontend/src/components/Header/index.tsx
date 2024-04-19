@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { HiMenu, HiOutlineX } from "react-icons/hi";
 import { PiReceiptLight } from "react-icons/pi";
 import { Menu } from "./components/Menu";
@@ -8,15 +8,23 @@ import { useAuth } from "@/hooks/auth";
 import { USER_ROLES } from "@/utils/roles";
 import { Link, useNavigate } from "react-router-dom";
 import { useSearch } from "@/hooks/search";
-import { useOrders } from "@/hooks/cartOrders";
+import { useCartOrders } from "@/hooks/cartOrders";
 import { FilterInput } from "../FilterInput";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { signOut, user } = useAuth();
   const { updateSearchState } = useSearch();
-  const { cartOrders } = useOrders();
+  const { cartStore, getCartOrders } = useCartOrders();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      getCartOrders(user.id);
+    }
+  }, []);
+
+  const cartItemCount = cartStore?.cartOrderItems.length || 0;
 
   function toggleMenu() {
     setIsMenuOpen((prevState) => !prevState);
@@ -75,7 +83,7 @@ export function Header() {
               <div className="relative lg:hidden">
                 <PiReceiptLight size={26} />
                 <span className="bg-tomato-100 rounded-full h-5 w-5 absolute -top-1.5 -right-1.5 flex items-center justify-center">
-                  {cartOrders.length}
+                  {cartItemCount}
                 </span>
               </div>
             </Link>
@@ -116,7 +124,7 @@ export function Header() {
 
             <Link to="/cart-orders">
               <Button
-                title={`Carrinho (${cartOrders.length})`}
+                title={`Carrinho (${cartItemCount})`}
                 className="flex items-center justify-center gap-1 w-[180px]"
               >
                 <PiReceiptLight size={26} />

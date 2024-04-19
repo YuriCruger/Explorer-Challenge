@@ -1,31 +1,36 @@
-import { Dish } from "@/types/dish";
+import { useAuth } from "@/hooks/auth";
+import { CartOrderItemProps, deleteCartOrderProps } from "@/types/cartOrder";
 import { formatPrice } from "@/utils/formatPrice";
 
 interface OrderItemProps {
-  dish: Dish;
-  deleteOrderFromCart: (orderId: number) => void;
+  cart_item: CartOrderItemProps;
+  deleteCartOrder: ({ user_id, item_id }: deleteCartOrderProps) => void;
   quantity: number;
 }
 
 export function OrderItem({
-  dish,
-  deleteOrderFromCart,
+  cart_item,
+  deleteCartOrder,
   quantity,
 }: OrderItemProps) {
+  const { user } = useAuth();
   return (
     <div className="py-5 flex flex-col gap-2 lg:flex-row">
       <div>
         <div className="flex gap-5">
           <img
-            src={`https://explorer-challenge.onrender.com/uploads/${dish.image}`}
-            alt=""
+            // src={`https://explorer-challenge.onrender.com/uploads/${cart_item.image}`}
+            src={`http://localhost:3333/uploads/${cart_item.image}`}
+            alt={`Foto do ${cart_item.name}`}
             className="h-[100px] w-[100px] rounded-full lg:w-[176px] lg:h-[176px]"
           />
 
           <div className="flex flex-col gap-1">
-            <h3 className="text-2xl font-bold">{dish.name}</h3>
+            <h3 className="text-2xl font-bold">{cart_item.name}</h3>
             <p className="text-light-300">
-              {dish.ingredients.map((ingredient) => ingredient.name).join(", ")}
+              {cart_item.ingredients
+                .map((ingredient) => ingredient.name)
+                .join(", ")}
               .
             </p>
             <div className="flex items-center gap-2 mt-auto">
@@ -38,10 +43,15 @@ export function OrderItem({
       </div>
 
       <div className="flex flex-col gap-2 items-start lg:ml-auto">
-        <p className="text-2xl font-bold">{formatPrice(dish.price)}</p>
-
+        <p className="text-2xl font-bold">{formatPrice(cart_item.price)}</p>
         <button
-          onClick={() => deleteOrderFromCart(dish.id)}
+          onClick={() =>
+            user &&
+            deleteCartOrder({
+              user_id: user.id,
+              item_id: cart_item.id,
+            })
+          }
           className="mt-auto text-tomato-200 hover:underline lg:ml-auto"
         >
           Remover
