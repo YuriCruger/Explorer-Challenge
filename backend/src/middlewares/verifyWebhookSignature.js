@@ -1,3 +1,5 @@
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+
 function verifyWebhookSignature(req, res, next) {
   const sig = req.headers["stripe-signature"];
   console.log("Received signature:", sig);
