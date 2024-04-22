@@ -59,7 +59,6 @@ class CartStoreService {
   }
 
   async removeCartItem({ userId, itemId }) {
-    console.log("meus dados => ", { userId, itemId });
     const cartItem = await this.cartStoreRepository.fetchCartItemForUser({
       userId,
       itemId,

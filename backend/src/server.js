@@ -12,7 +12,7 @@ const stripeController = new StripeController();
 
 const app = express();
 app.post(
-  "/stripe/webhook",
+  "/webhook",
   express.raw({ type: "application/json" }),
   stripeController.handleWebhook
 );
