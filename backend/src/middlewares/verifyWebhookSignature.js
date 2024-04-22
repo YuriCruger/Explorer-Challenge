@@ -8,7 +8,7 @@ function verifyWebhookSignature(req, res, next) {
     req.webhookEvent = stripe.webhooks.constructEvent(
       req.body,
       sig,
-      stripeWebhookSecret
+      process.env.STRIPE_WEBHOOK_SECRET
     );
     console.log("Webhook event verified:", req.webhookEvent);
     next();
