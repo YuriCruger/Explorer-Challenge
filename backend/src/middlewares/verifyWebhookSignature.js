@@ -2,11 +2,13 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 function verifyWebhookSignature(req, res, next) {
   const sig = req.headers["stripe-signature"];
+  const requestBody = JSON.stringify(req.body);
   console.log("Received signature:", sig);
+  console.log("Request body:", requestBody);
 
   try {
     req.webhookEvent = stripe.webhooks.constructEvent(
-      req.body,
+      requestBody,
       sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
