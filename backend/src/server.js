@@ -9,11 +9,13 @@ const path = require("path");
 const uploadConfig = require("./configs/upload");
 const StripeController = require("./controller/StripeController");
 const stripeController = new StripeController();
+const verifyWebhookSignature = require("./middlewares/verifyWebhookSignature");
 
 const app = express();
 app.post(
   "/webhook",
   express.raw({ type: "application/json" }),
+  verifyWebhookSignature,
   stripeController.handleWebhook
 );
 app.use(express.json());

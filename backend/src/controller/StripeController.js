@@ -40,6 +40,7 @@ class StripeController {
 
   async handleWebhook(request, response) {
     const sig = request.headers["stripe-signature"];
+    console.log("Received signature in webhook handler:", sig);
     let event;
 
     try {
@@ -48,6 +49,7 @@ class StripeController {
         sig,
         process.env.STRIPE_WEBHOOK_SECRET
       );
+      console.log("Received event type:", event.type);
     } catch (err) {
       console.log(`Webhook Error: ${err.message}`);
       return response.status(400).send(`Webhook Error: ${err.message}`);
